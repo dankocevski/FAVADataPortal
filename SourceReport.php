@@ -251,7 +251,7 @@
 			hh = hh - f3;
 			hh = hh * 10;
 			var f4 = Math.floor (hh); 
-			ret = sign2 + h + "." +f1+f2+f3+f4 + "&deg;";
+			ret = sign2 + h + "." +f1+f2+f3+f4 + "°";
 			return ret;
 		}
 
@@ -290,8 +290,8 @@
 				document.getElementById('table_gall').innerHTML = sourceRecord['galb'] + '&deg;';
 			}
 
-			// document.getElementById('table_galb').innerHTML = sourceRecord['gall'] + '&deg;';
-			// document.getElementById('table_gall').innerHTML = sourceRecord['galb'] + '&deg;';
+			// document.getElementById('table_galb').innerHTML = sourceRecord['gall'] + '°';
+			// document.getElementById('table_gall').innerHTML = sourceRecord['galb'] + '°';
 
 			// // Low Energy FAVA
 			// document.getElementById('StartTimeLikelihoodLow').innerHTML = sourceRecord['tmin'];
@@ -307,7 +307,7 @@
 			document.getElementById('le_ts').innerHTML = sourceRecord['le_ts'];
 			document.getElementById('le_tssigma').innerHTML = sourceRecord['le_tssigma'] + '&sigma;';
 			document.getElementById('le_ra').innerHTML = sourceRecord['le_ra'] + '&deg;';
-			document.getElementById('le_dec').innerHTML = sourceRecord['le_dec'] + '&deg;';
+			document.getElementById('le_dec').innerHTML = sourceRecord['le_dec'] + '&deg';
 			document.getElementById('le_r95').innerHTML = sourceRecord['le_r95'] + '&deg;';
 			document.getElementById('le_flux').innerHTML = sourceRecord['le_flux'] + ' &plusmn; ' + sourceRecord['le_fuxerr'];
 			document.getElementById('le_index').innerHTML = sourceRecord['le_index'] + ' &plusmn; ' + sourceRecord['le_indexerr'];
@@ -316,9 +316,9 @@
 			// High Energy Likelihood
 			document.getElementById('he_ts').innerHTML = sourceRecord['he_ts'];
 			document.getElementById('he_tssigma').innerHTML = sourceRecord['he_tssigma'] + '&sigma;';
-			document.getElementById('he_ra').innerHTML = sourceRecord['he_ra'] + '&deg;';
-			document.getElementById('he_dec').innerHTML = sourceRecord['he_dec'] + '&deg;';
-			document.getElementById('he_r95').innerHTML = sourceRecord['he_r95'] + '&deg;';
+			document.getElementById('he_ra').innerHTML = sourceRecord['he_ra'] + '&deg';
+			document.getElementById('he_dec').innerHTML = sourceRecord['he_dec'] + '&deg';
+			document.getElementById('he_r95').innerHTML = sourceRecord['he_r95'] + '&deg';
 			document.getElementById('he_flux').innerHTML = sourceRecord['he_flux'] + ' &plusmn; ' + sourceRecord['he_fuxerr'];
 			document.getElementById('he_index').innerHTML = sourceRecord['he_index'] + ' &plusmn; ' + sourceRecord['he_indexerr'];
 
@@ -563,7 +563,7 @@
 						labels: {
 
 							// formatter: function() {
-							// 	return this.value + '&deg;C';
+							// 	return this.value + '°C';
 							// },
 
 							style: {
@@ -716,7 +716,7 @@
 
 						labels: {
 							// formatter: function() {
-							// 	return this.value + '&deg;C';
+							// 	return this.value + '°C';
 							// },
 							style: {
 								color: '#000000',
@@ -841,7 +841,7 @@
 						labels: {
 
 							// formatter: function() {
-							// 	return this.value + '&deg;C';
+							// 	return this.value + '°C';
 							// },
 
 							style: {
@@ -980,7 +980,7 @@
 
 						labels: {
 							// formatter: function() {
-							// 	return this.value + '&deg;C';
+							// 	return this.value + '°C';
 							// },
 							style: {
 								color: '#000000',
@@ -1393,8 +1393,8 @@
 
 		            if (inverse_coordinates !== undefined) {
 		                c_long = -1 * inverse_coordinates[0]; 
-		                // *-1 is to get "conventional" RA-axis representation, i.e. 180&deg; <-- 0&deg;/360&deg; <-- 180&deg;
-		                // By default, D3.js orientation is: 180&deg; --> 360&deg;/0&deg; --> 180&deg;
+		                // *-1 is to get "conventional" RA-axis representation, i.e. 180° <-- 0°/360° <-- 180°
+		                // By default, D3.js orientation is: 180° --> 360°/0° --> 180°
 
 		                // x-axis wrapping
 		                if (c_long < 0) {
@@ -1405,7 +1405,7 @@
 		                c_lat = parseFloat(inverse_coordinates[1]).toFixed(2);
 
 		                    d3.select("#cursorcoords")
-		                        .text("RA: "+c_long+"&deg;, Dec: "+c_lat+"&deg;");
+		                        .text("RA: "+c_long+"°, Dec: "+c_lat+"°");
 		            }
 		        });
 		    });
@@ -1636,9 +1636,9 @@
 		        
 		        // Create graticule
 		        graticule = d3.geo.graticule()
-		        .extent( [[-180, -85], [180, 85 + 1e-6]] )  // Limit the grid to +/- 85&deg; in dec 
+		        .extent( [[-180, -85], [180, 85 + 1e-6]] )  // Limit the grid to +/- 85° in dec 
 		        .step([step_ra,step_dec])      // graticule steps (default 10,10)
-		        .precision(1.0)                // graticule precision (&deg; ; default 2.5&deg;) // NB: only useful on x-axis: building of parallels thanks to arcs of great circles
+		        .precision(1.0)                // graticule precision (° ; default 2.5°) // NB: only useful on x-axis: building of parallels thanks to arcs of great circles
 		        
 		        
 		        // Insert graticule
@@ -1662,14 +1662,14 @@
 
 		                if ((d.coordinates[0][0] == d.coordinates[1][0])) { // meridian
 		                    if (-1*d.coordinates[0][0] >= 0) {
-		                        return (decimal_labels ? -1*d.coordinates[0][0].toString()+'&deg;' : deg2hms(-1*d.coordinates[0][0]).shortstring);
+		                        return (decimal_labels ? -1*d.coordinates[0][0].toString()+'°' : deg2hms(-1*d.coordinates[0][0]).shortstring);
 		                    }
 		                    else {
-		                         return (decimal_labels ? (-1*d.coordinates[0][0]+360).toString()+'&deg;' : deg2hms(-1*d.coordinates[0][0]+360).shortstring);               
+		                         return (decimal_labels ? (-1*d.coordinates[0][0]+360).toString()+'°' : deg2hms(-1*d.coordinates[0][0]+360).shortstring);               
 		                    }
 		                }
-		                else if (d.coordinates[0][1] == d.coordinates[1][1] && d.coordinates[0][1] != 0) {   // parallele (NB: special placement for O&deg;)
-		                    return (decimal_labels ? d.coordinates[0][1].toString()+'&deg;' : deg2dms(d.coordinates[0][1]).shortstring);
+		                else if (d.coordinates[0][1] == d.coordinates[1][1] && d.coordinates[0][1] != 0) {   // parallele (NB: special placement for O°)
+		                    return (decimal_labels ? d.coordinates[0][1].toString()+'°' : deg2dms(d.coordinates[0][1]).shortstring);
 		                }
 		            })
 
@@ -1708,9 +1708,9 @@
 		                }
 		            });
 
-		        // Special labels: dec=-90,0,90&deg; and ra=180&deg;
+		        // Special labels: dec=-90,0,90° and ra=180°
 		        g.append("text")
-		            .text(function(){ return (decimal_labels ? '-90&deg;' : '-90:00'); })
+		            .text(function(){ return (decimal_labels ? '-90°' : '-90:00'); })
 		            .attr("class","coordinateLabel")
 		            .attr("style","text-anchor: middle;")
 		            .attr("dx",0)
@@ -1720,7 +1720,7 @@
 		            });
 
 		         g.append("text")
-		            .text(function(){ return (decimal_labels ? '0&deg;' : '+00:00'); })
+		            .text(function(){ return (decimal_labels ? '0°' : '+00:00'); })
 		            .attr("class","coordinateLabel")
 		            .attr("style","text-anchor: end;")
 		            .attr("dx",25)
@@ -1730,7 +1730,7 @@
 		            });
 
 		        g.append("text")
-		            .text(function(){ return (decimal_labels ? '90&deg;' : '+90:00'); })
+		            .text(function(){ return (decimal_labels ? '90°' : '+90:00'); })
 		            .attr("class","coordinateLabel")
 		            .attr("style","text-anchor: middle;")
 		            .attr("dx",0)
@@ -1740,7 +1740,7 @@
 		            });
 
 		        // g.append("text")
-		        //     .text(function(){ return (decimal_labels ? '180&deg;' : '12:00'); })
+		        //     .text(function(){ return (decimal_labels ? '180°' : '12:00'); })
 		        //     .attr("class","coordinateLabel")
 		        //     .attr("style","text-anchor: middle;")
 		        //     .attr("dx",0)

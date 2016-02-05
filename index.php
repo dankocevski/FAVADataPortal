@@ -379,7 +379,7 @@
 		        points_CanvasProjection.push(point_CanvasProjection);
 		        if (P._visible(360.-parseFloat(point.GLON), parseFloat(point.GLAT))) {
 		            ctx.beginPath()
-		            if (point.ASSOC1 === 'none') {
+		            if (point.ASSOC1 === 'None') {
 		            	// ctx.fillStyle = "rgba(0,103,0," + parseFloat(point.Size) * 0.115 + ")";
 		            	ctx.fillStyle = "rgba(0,179,0, 1.0)";
 
@@ -633,7 +633,7 @@
 					    var radius = 8;
 
 					    // Determine the number of associated and unassociated sources
-					    if (sourceRecord['fglassoc'] === 'none') {
+					    if (sourceRecord['fglassoc'] === 'None') {
 					    	numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
 					    } else {
 							numberOfAssocaitedSources = numberOfAssocaitedSources + 1
