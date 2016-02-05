@@ -1405,7 +1405,7 @@
 		                c_lat = parseFloat(inverse_coordinates[1]).toFixed(2);
 
 		                    d3.select("#cursorcoords")
-		                        .text("RA: "+c_long+"<sup>o</sup>, Dec: "+c_lat+"<sup>o</sup>");
+		                        .text("RA: "+c_long+"°, Dec: "+c_lat+"°");
 		            }
 		        });
 		    });
@@ -1414,7 +1414,7 @@
 		    // -- When leaving the map --
 		    g.on('mouseleave', function () {
 		            d3.select("#cursorcoords")
-		                .text("RA: --, Dec: --");
+		                .text("RA: -- °, Dec: -- °");
 		    });
 
 
