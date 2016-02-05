@@ -11,9 +11,9 @@
     <!-- D3 Plotting Library -->
     <!-- // <script type="text/javascript" src="/js/lib/dummy.js"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="/css/result-light.css"> -->
-    <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
-    <script type="text/javascript" src="http://d3js.org/d3.geo.projection.v0.js"></script>
-    <script type="text/javascript" src="http://d3js.org/topojson.v1.js"></script>
+    <script charset="utf-8" type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+    <script charset="utf-8" type="text/javascript" src="http://d3js.org/d3.geo.projection.v0.js"></script>
+    <script charset="utf-8" type="text/javascript" src="http://d3js.org/topojson.v1.js"></script>
 
     <!-- jQuery -->
     <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
