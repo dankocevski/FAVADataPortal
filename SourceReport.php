@@ -1414,7 +1414,7 @@
 		    // -- When leaving the map --
 		    g.on('mouseleave', function () {
 		            d3.select("#cursorcoords")
-		                .text("RA: -- °, Dec: -- °");
+		                .text("RA: -- °, Dec: -- °".replace('Â',''));
 		    });
 
 
