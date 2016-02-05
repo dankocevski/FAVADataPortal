@@ -36,7 +36,7 @@
 
 
     // Initiate the database connection
-    $db = new SQLite3 ('./db/fava_2FAV.db');
+    $db = new SQLite3 ('./db/fava_flares.db');
 
     // Return timebin data
     if ($typeOfRequest === 'TimebinData') { 
