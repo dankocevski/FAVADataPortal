@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <title>Fermi All-Sky Variability Analysis (FAVA) - About FAVA</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<link rel="icon" type="image/png" href="./img/favicon2.png">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="./js/jquery-1.12.0.min.js"></script>
+
+    <!-- Bootstrap core js -->
+    <script src="./js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap theme -->
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- NASA theme -->
+    <link rel="stylesheet" href="./css/NASA.css">
+    
+    <!-- Highcharts -->
+	<script src="./js/Highcharts/highcharts.js"></script>
+	<script src="./js/Highcharts/highcharts-more.js"></script>
+	<script src="./js/Highcharts/modules/exporting.js"></script>
+
+    <!-- Highcharts -->
+    <script type="text/javascript" src="./js/kartograph.js"></script>
+    <script type="text/javascript" src="./js/table2CSV.js" > </script> 
+
+</head>
+
+<!-- custom css -->
+<style type="text/css">
+
+    /* The selection tool tip */
+    #tip {
+        border: solid;
+        border-radius: 5px;
+        background-color: rgba(255,255,255,.90);
+        /*background-color: white;   */
+        /*opacity: 0.8;*/
+        border: 2px solid rgba(0, 0, 0, .9);
+        position: absolute;
+        height: 90px;
+        width: auto;    
+        top: 100px;
+        box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.5) inset;
+        text-align: left;
+        color: #000;
+        padding: 10px 10px 0px 10px;
+        visibility: hidden;
+        /*font-weight: bold;*/
+        font-size: 14px;
+        line-height: 125%;
+    }
+
+    /* The red selection circle */
+    #Selection {
+        border: solid;
+        border-radius: 15px;
+        border-width: 2px;
+        border-color: red;
+        opacity: 0.75;
+        position: absolute;
+        height: 15px;
+        width: 15px;    
+        top: 100px;
+        visibility: hidden;
+    }
+
+
+	.TimebinData td { 
+		height: 100px 
+	};
+
+	/* Removing the hover coloring from bootstrap tables */
+    .table tbody tr:hover td,
+    .table tbody tr:hover th {
+      background-color: transparent;
+    }
+
+	#proj { 
+		background:url(./img/FAVAFlareSummary_NoFlares.png);
+		background-repeat: no-repeat;
+		background-position: 55% 55%; 
+		background-size: 98% 99%;
+	}
+
+	#footer { 
+		float:left;
+		padding:25px 0 10px 10px;
+		width:99%}
+	}
+
+
+</style>
+
+
+<body id="body-plain">
+
+
+
+
+	<!-- main starts here -->		
+	<div id="main" style="width:1650px">	
+
+	    <!-- Start NASA Container -->
+	    <div id="nasa-container" style="margin:8px 0 0 10px">
+
+	        <!-- Start NASA Banner -->
+	        <div id="nasa-banner-plain">
+
+	            <!-- Left - Logo -->
+	            <div class="nasa-logo">
+	                <a href="http://www.nasa.gov/"><img src="http://fermi.gsfc.nasa.gov/ssc/inc/img/nasa_logo.gif" width="140" height="98" border="0" alt="NASA Logo"></a>
+	            </div>
+	        
+	            <!-- Middle - Affiliations -->
+	            <div id="nasa-affiliation">
+	                <h1><a href="http://www.nasa.gov/">National Aeronautics and Space Administration</a></h1>
+	                <h2><a href="http://www.nasa.gov/goddard">Goddard Space Flight Center</a></h2>
+	            </div>
+	            
+	            <!-- Right - Search and Links -->
+	            <div id="nasa-search-links">
+	                <div id="header-links">
+	                    <a href="/ssc/">FSSC</a> &bull; <a href="http://heasarc.gsfc.nasa.gov/">HEASARC</a> &bull; <a href="http://science.gsfc.nasa.gov/">Sciences and Exploration</a>
+	                </div>
+	            </div>
+
+	        </div>
+	        <!-- End NASA Banner -->
+
+	        <!-- Start Mission Banner Graphic -->
+<!-- 	        <div id="mission-banner-plain">
+	            <a href="/ssc/"><img src="http://fermi.gsfc.nasa.gov/ssc/inc/img/fssc_banner.jpg" width="952" height="100" alt="Fermi Science Support Center" /></a>
+	        </div> -->
+	        <!-- End Mission Banner Graphic -->
+
+	    <!-- End NASA Container -->
+	    </div>
+
+
+		<!-- Header starts here -->
+		<div>
+			<div style="float: left; padding-top:12px; padding-left:25px"><img middle; style="width: 100%; height: 100%" src="./img/Fermi_Small.png"></div>
+			<div style="margin-left: 25px;padding-left: 75px; padding-bottom:20px; padding-top: 5px">
+				<H2>Fermi All-sky Variability Analysis (FAVA) - About FAVA</H2>
+			</div>
+		</div>
+		<!-- Header ends here -->
+
+		<!-- sidebar start here -->
+	    <div style="width:300px; margin-left:25px; float:left;" id="coordinateInput">
+
+
+			<!-- Light Curve Generator start here -->		
+<!-- 			<div class="panel panel-default">
+				<div class="panel-heading">
+			        <h3 class="panel-title">Light Curve Generator</h3>
+			     </div>
+			     <div class="panel-body">
+
+					<div style="width: 50px; float: left; margin-left:10px; line-height: 2.4;">
+						RA:
+						<BR>
+						Dec:
+					</div>
+
+					<div style="margin-left: 75px;">
+						<input id="raInput" type="text" class="input-small" placeholder="17.761" id="inputKey" style="margin-bottom: 10px;">
+						<BR>
+						<input id="decInput" type="text" class="input-small" placeholder="-29.008" id="inputKey" style="margin-bottom: 10px;">
+					</div>
+
+					<center>
+						<div style="width: 150px; margin-left:125px;" id="submitButtonDiv">
+					    	<button form="submitForm" type="button" onclick="submit()" name="submitButton" id="submitButton" subvalue="True" class="btn btn-primary">Submit</button>
+					    </div>
+					    <div id="ajaxSpinner" style="width: 150px; margin-left:125px; display:none">	
+					   		
+					    </div>
+
+				    </center>
+
+		      	</div>
+		    </div> -->
+			<!-- Light Curve Generator ends here -->		
+
+
+
+			<!-- FAVA Resources start here -->		
+			<div class="panel panel-default" style="height: 225px;">
+				<div class="panel-heading">
+			        <h3 class="panel-title">FAVA Resources</h3>
+			     </div>
+
+					<center>
+
+			            <table class="table table-striped">
+			            <!-- <table class="table"> -->
+			              <tbody>					
+  								<tr><td><a href="index.php">FAVA Weekly Flare List</a></td><td td id="table_flarelist"></td></tr>			
+  								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
+								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
+								<tr><td><a href="#">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
+								<!-- <tr><td><a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwjSw8e3oKzKAhWMPz4KHU0bAMwQFggtMAE&url=http%3A%2F%2Ffermi.gsfc.nasa.gov%2Fscience%2Fmtgs%2Fsymposia%2F2015%2Fprogram%2Fwednesday%2Fsession11B%2FDKocevski.pdf&usg=AFQjCNGB3SKJx9skOJCGjHqWykqSw0R7eg&sig2=jKSTnYazQwXoMa2VHCbg5w">About FAVA</a></td><td td id="table_flarelist"></td></tr>			 -->
+								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
+
+					<!-- <button data-toggle="modal" href="#ConfigureTableModal" type="submit" class="btn btn-primary" style="color:white;font-size: 12px;margin:5px">Configure Table</button> -->
+
+
+
+			              </tbody>
+			            </table>  
+
+				    </center>
+
+		    </div>
+			<!-- FAVA Resources ends here -->		
+
+
+
+		    <!-- Caveat statement start here -->	
+			<div>	
+				<center>
+					<div class="alert alert-info" role="alert">All analysis results presented here are preliminary unless otherwise stated.  Please consult the <a href="About.html">about page</a> for important details and caveats associated with this analysis.</div>
+			    </center>
+		    </div>
+			<!-- Caveat statement ends here -->	
+
+			<!-- Citation request start here -->	
+			<div>	
+				<center>
+					<div class="alert alert-success" role="alert">Please reference <a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">Ackermann et al. 2013</a> for any use of the presented results</div>
+			    </center>
+		    </div>
+			<!--  Citation request ends here -->	
+
+
+	
+		</div>
+		<!-- sidebar ends here -->
+
+		<!-- Content starts here -->
+		<div id="content">
+
+			<!-- About FAVA panel start here -->	
+		    <div style="width:1300px; margin-left: 340px;">
+		 		<div class="panel panel-default" style="height: 1275px;">
+					<div class="panel-heading"><h3 class="panel-title">About FAVA</div>
+
+			     		<!-- <div style="width:400px; height:675px; float:right; border:1px solid #ddd; margin:5px 5px 5px 15px; border-radius: 4px;"> -->
+			     		<div class="panel panel-default" style="width:400px; height:650px; float:right; margin:10px 10px 10px 15px;">
+			     			<div class="panel-body">
+								<img src="./img/FAVA.png" width="100%">
+								<p style="margin:0px;">Figure 1: An illustration of the FAVA technique taken from Ackermann et al. (2013). The measured counts map is shown in the first row, expected counts from the average emission observed during the first 47 months of Fermi observations is shown in the middle row, and the third row shows the significance of the flux variations.</p>
+							</div>
+						</div>
+
+						<p style="margin:10px">
+					    <B>Motivation:</B><BR>
+							The Fermi All-sky Variability Analysis (FAVA) is a photometric analysis technique that searches for flaring sources in data collected by the <a href="https://www-glast.stanford.edu">Large Area Telescope (LAT)</a> onboard NASA's <a href="http://fermi.gsfc.nasa.gov">Fermi Gamma-ray Space Telescope's</a> . The FAVA analysis bins data over a grid of regions on the sky and searches for deviations from the expected flux based on the observed long-term average emission collected over the course of the Fermi mission. This photometric approach has three main advantages over a traditional likelihood analysis typically employed for the analysis of gamma-ray data. 1) The analysis is independent of any model for the diffuse gamma-ray emission. The diffuse emission is expected to be constant over the lifetime of the Fermi mission and therefore cancels out in the comparisons between number of expected and measured gamma-ray events. 2) The analysis is computationally inexpensive, allowing us to blindly search for flux variations over the entire sky and over a range of energy bands and timescales, potentially yielding unexpected discoveries. 3) No assumptions are made about the spectral shape of the gamma-ray sources as is required in a traditional likelihood analysis.
+						<BR><BR>
+						<B>Analysis Technique:</B><BR>
+							FAVA uses the mission average emission to estimate the expected counts over a much shorter timescale.  This is achieved by binning the observed emission into a grid of regions, or pixels, on the sky.  Each pixel is then smoothed by assigning all events that were detected within a distance corresponding to the 68% containment radius of the LAT point-spread function (PSF) and normalized by the total exposure. If each pixel position is characterized in spherical coordinates by &phi; and &theta;, then the expected counts for a given time interval and particular pixel on the sky is calculated according to:<BR></p>
+							<center>
+								<img src="./img/Equation.png" width="35%">
+							</center>
+							<p style="margin:10px">
+							where &epsilon; represents the exposure of the observations. Since the PSF depends on both the photon energy E and on the incidence angle &alpha; with respect to the LAT, we integrate over these two parameters.  The observed and expected rates are then compared and the difference is converted to a Poisson probability, which is in turn converted to a Gaussian &sigma;.  
+						<BR><BR>
+							<B>Likelihood Followup:</B><BR>
+							Because FAVA is a photometric technique that bins data over a broad energy range, the analysis provides very limited spectral information of detected flares.  Therefore, the location of each flare is also examined using a traditional likelihood analysis in an attempt to better characterize and associate the transient source.  The FAVA detections serve as seed positions on which to perform a likelihood scan to generate a 5x5 degree test statistic (TS) map.  By fixing the flux and index parameters for all known catalog sources in the region of interest, the resulting TS map can reveal the presence of both uncatalogued sources as well as sources that vary significantly above their catalog values.  The localization provided by these TS maps can more accurately associate FAVA flares to known 3FGL sources, typically producing localization errors of ~0.1 deg at 95% confidence. 
+						<BR><BR>
+						<B>Analysis Details:</B><BR>
+							Averaged emission duration: <b>4 years</b><BR>
+							Analysis time bins: <b>1 week</b><BR>
+							Sky bins: <b>0.5 deg</b><BR>
+							Low energy bin: <b>100 - 800 MeV</b><BR>
+							How energy bin: <b>800 - 3e5 MeV</b><BR>
+							Data Selection: <b>P8_SOURCE</b><BR>
+							IRFs: <b>P8R2_SOURCE_V6</b><BR> 
+							Low energy likelihood analysis: <b>binned</b><BR>
+							High energy likelihood analysis: <b>unbinned</b><BR>
+							Low energy TS map: <b>7x7 deg, 0.15 deg binning</b><BR>
+							High energy TS map: <b>3x3 deg, 0.05 deg binning</b>
+						<BR><BR>
+						<B>Analysis Caveats:</B><span class="label label-danger" style="margin-left:5px">Important!</span><BR>
+							It is important to remember that FAVA is a photometric technique.  Because of the large PSF of the LAT (as much as 12 deg at 100 MeV when using P8R2_SOURCE_V6), care must be taken in interpreting emission excesses at a particular location in the sky, as emission from a flaring source will be detected over a large region of the sky.  Therefore, users of the light curve generator are encourage to consult the accompanying flare map to check the percise location of the flare associated with any excess emission found near the user's coordiantes of interest.  
+						<BR><BR>
+						<B>Credits:</B><BR>
+							The FAVA pipeline is currently maintained by <a href="http://www.rolfbuehler.net">Rolf Buehler</a> (DESY Zeuthen), <a href="http://www.kocevski.com">Daniel Kocevski</a> (NASA Goddard Space Flight Center), and <a href="https://astro.desy.de/gamma_astronomy/group_members/index_eng.html">Matteo Giomi</a> (DESY Zeuthen), with followup activity coordinated by <a href="https://www.ces.clemson.edu/~majello/">Marco Ajello</a> (Clemson).  The website interface was designed by Daniel Kocevski, using the <a href="http://d3js.org">D3</a>, <a href="http://http://www.highcharts.com">Highcharts</a>, and <a href="http://kartograph.org">Kartograph</a> javascript plotting libraries, and the <a href="http://getbootstrap.com">Bootstrap</a> toolkit.							
+						<BR><BR>						
+						<B>Further Reading:</B><BR>
+							<a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">The Fermi All-sky Variability Analysis: A List of Flaring Gamma-Ray Sources and the Search for Transients in Our Galaxy</a>, <i>Ackermann et al. 2013 ApJ, 771 57</i><BR>
+							<a href="http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2015/program/wednesday/session11B/DKocevski.pdf">An Overview of the Second FAVA Catalog</a>, <i>Kocevski et al. 2015, 6th Fermi Symposium, Washington, DC, Nov. 11th, 2015</i>
+						</p>						
+					</div>	
+
+	      		</div>
+		    </div>
+			<!-- FAVA flare panel ends here -->	
+
+
+
+
+		</div>
+		<!-- Content ends here -->
+
+
+
+
+	<!-- Main ends here -->
+	</div>
+
+
+	<!-- footer starts here -->	
+	<div id="footer">
+		<div id="footer-content">
+		
+			<p>
+				<hr>
+				FAVA Data Portal v2.0	- Support Contact:<a href="mailto:daniel.kocevski@nasa.gov"> Daniel Kocevski</a>
+			</p>
+
+		</div>
+	</div>
+	<!-- footer ends here -->
+
+</body>
+
+
