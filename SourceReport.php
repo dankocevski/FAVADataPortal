@@ -11,9 +11,9 @@
     <!-- D3 Plotting Library -->
     <!-- // <script type="text/javascript" src="/js/lib/dummy.js"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="/css/result-light.css"> -->
-    <script charset="utf-8" type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
-    <script charset="utf-8" type="text/javascript" src="http://d3js.org/d3.geo.projection.v0.js"></script>
-    <script charset="utf-8" type="text/javascript" src="http://d3js.org/topojson.v1.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.geo.projection.v0.js"></script>
+    <script type="text/javascript" src="http://d3js.org/topojson.v1.js"></script>
 
     <!-- jQuery -->
     <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
@@ -1405,7 +1405,7 @@
 		                c_lat = parseFloat(inverse_coordinates[1]).toFixed(2);
 
 		                    d3.select("#cursorcoords")
-		                        .html("RA: "+c_long+"°, Dec: "+c_lat+"°");
+		                        .text("RA: "+c_long+"°, Dec: "+c_lat+"°");
 		            }
 		        });
 		    });
@@ -1414,7 +1414,7 @@
 		    // -- When leaving the map --
 		    g.on('mouseleave', function () {
 		            d3.select("#cursorcoords")
-		                .text("RA: -- °, Dec: -- °".replace('Â',''));
+		                .text("RA: -- °, Dec: -- °");
 		    });
 
 
