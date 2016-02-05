@@ -35,6 +35,8 @@
 	<script src="./js/Highcharts/highcharts-more.js"></script>
 	<script src="./js/Highcharts/modules/exporting.js"></script>
 
+	<!-- Test -->
+
 	<style type="text/css">
 
 		.stroke {
