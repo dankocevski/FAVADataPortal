@@ -1521,6 +1521,8 @@
 		    		// Hide any tooltips
 					tooltip_map.style("left", "0px")
 					tooltip_map.style("top", "0px")
+					tooltip_map.style("opacity", 0)   
+
 
 		            g.attr("transform", "translate(" + zoom.translate() + ")" + "scale(" + zoom.scale() + ")" );
 

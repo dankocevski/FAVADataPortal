@@ -4,3 +4,7 @@ db/fava_2FAV.db
 db/fava.db
 
 db/fava_flares.db
+
+db/fava_flares_newtimebin.txt
+
+db/fava_newtimebin.txt

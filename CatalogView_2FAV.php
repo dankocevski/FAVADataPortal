@@ -710,50 +710,101 @@
 			console.log('lines: ' + lines)
 
 
+			// // Loop through each data entry and add columns to the corresponding row entry
+			// for (var i=parseFloat(offset); i<parseFloat(offset) + parseFloat(lines); i++) {
+
+			//     sourceRecord = data[i];
+			//     row[++j] = '<tr>';
+
+
+
+			//     for (var key in sourceRecord) {
+
+			// 		row[++j] ='<td style="text-align: center;">';
+
+			// 		if (key === 'num') {
+
+			// 			row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
+
+			// 		} else if (key === 'bestPositionSource') {
+
+			// 			if (sourceRecord[key] === 'low') {
+			// 				row[++j] = 'Like LE'
+			// 			} else if (sourceRecord[key] === 'high') {
+			// 				row[++j] = 'Like HE'
+			// 			} else {
+			// 				row[++j] = sourceRecord[key];
+			// 			}
+						
+
+			// 		} else if (key === 'he_avnev') {
+
+			// 			row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
+
+			// 		} else if (key === 'he_sigma') {
+
+			// 			row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
+
+			// 		} else {
+			//         	row[++j] = sourceRecord[key];
+
+			// 		}
+
+			//         row[++j] = '</td>';
+			//     }
+
+			// }
+
+
 			// Loop through each data entry and add columns to the corresponding row entry
-			for (var i=parseFloat(offset); i<parseFloat(offset) + parseFloat(lines); i++) {
+			for (var i=0; i<data.length; i++) {
 
 			    sourceRecord = data[i];
 			    row[++j] = '<tr>';
 
-			    console.log('Adding data point: ' + i)
+			    var ASSOC1 = sourceRecord['assoc']
 
-			    for (var key in sourceRecord) {
+			    if (ASSOC1.indexOf('None') > -1) {
 
-					row[++j] ='<td style="text-align: center;">';
+				    for (var key in sourceRecord) {
 
-					if (key === 'num') {
+						row[++j] ='<td style="text-align: center;">';
 
-						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
+						if (key === 'num') {
 
-					} else if (key === 'bestPositionSource') {
+							row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
 
-						if (sourceRecord[key] === 'low') {
-							row[++j] = 'Like LE'
-						} else if (sourceRecord[key] === 'high') {
-							row[++j] = 'Like HE'
+						} else if (key === 'bestPositionSource') {
+
+							if (sourceRecord[key] === 'low') {
+								row[++j] = 'Like LE'
+							} else if (sourceRecord[key] === 'high') {
+								row[++j] = 'Like HE'
+							} else {
+								row[++j] = sourceRecord[key];
+							}					
+
+						} else if (key === 'he_avnev') {
+
+							row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
+
+						} else if (key === 'he_sigma') {
+
+							row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
+
 						} else {
-							row[++j] = sourceRecord[key];
+				        	row[++j] = sourceRecord[key];
+
 						}
-						
 
-					} else if (key === 'he_avnev') {
+				        row[++j] = '</td>';
+				    }
 
-						row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
-
-					} else if (key === 'he_sigma') {
-
-						row[++j] = parseFloat(sourceRecord[key]).toFixed(2)
-
-					} else {
-			        	row[++j] = sourceRecord[key];
-
-					}
-
-			        row[++j] = '</td>';
-			    }
+				}
 
 			}
+
+
 
             // if (points.length < parseFloat(lines) && points.length == data.length) {
 

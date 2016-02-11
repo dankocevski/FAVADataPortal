@@ -1329,6 +1329,15 @@
 		    // Handles zoom/pan
 		    function zoomed() {
 
+					// Select the tooltip area to the webpage
+					var tooltip_map = d3.select(".tooltip_map")
+
+		    		// Hide any tooltips
+					tooltip_map.style("left", "0px")
+					tooltip_map.style("top", "0px")
+					tooltip_map.style("opacity", 0)   
+
+					
 		            g.attr("transform", "translate(" + zoom.translate() + ")" + "scale(" + zoom.scale() + ")" );
 
 		            t = zoom.translate(),
