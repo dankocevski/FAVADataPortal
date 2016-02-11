@@ -784,6 +784,16 @@
 			var points = [];
 			var point = {};
 
+			var numberOfAssocaitedSources = 0
+			var numberOfUnassocaitedSources = 0
+
+			// Determine the number of associated and unassociated sources
+			if (sourceRecord['fglassoc'] === 'None') {
+				numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
+			} else {
+				numberOfAssocaitedSources = numberOfAssocaitedSources + 1
+			}
+
 			console.log(data.length);
 
 			// Loop through each data entry and extract the values
@@ -807,6 +817,35 @@
 			    points.push(point);
 
 			}
+
+	        // Update the FAVA analysis overview table
+			document.getElementById('table_favaDetections').innerHTML = data.length.toString();
+			document.getElementById('table_associatedDetections').innerHTML = numberOfAssocaitedSources.toString();
+			document.getElementById('table_unassociatedDetections').innerHTML = numberOfUnassocaitedSources.toString();
+
+			var c = document.getElementById("AssociatedCanvas");
+			var ctx = c.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(31,10,3,0,2*Math.PI);
+			ctx.fillStyle = "rgba(154, 180, 255, 1.0)";
+			ctx.fill()
+			ctx.lineWidth = '0.25';
+			ctx.strokeStyle = 'black';
+			ctx.stroke();
+			ctx.closePath();
+
+
+			var c = document.getElementById("unassociatedCanvas");
+			var ctx = c.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(15,10,3,0,2*Math.PI);
+			ctx.fillStyle = "rgba(0,179,0, 1.0)"
+			ctx.fill()
+            ctx.lineWidth = '0.25';
+			ctx.strokeStyle = 'black';
+			ctx.stroke();
+			ctx.closePath();
+
 
 			console.log(points);
 
@@ -992,27 +1031,66 @@
 	    <div style="width:300px; margin-left:25px; float:left;" id="coordinateInput">
 
 			<!-- Analysis information start here -->		
-			<div class="panel panel-default">
+			<div class="panel panel-default" style="height: 225px;">
 				<div class="panel-heading">
 			        <h3 class="panel-title">Analysis Run</h3>
 			    </div>
-			    <div class="panel-body">
 
+<!-- 			    <div class="panel-body">
 					<div class="table-responsive">
 			            <table class="table table-striped table-condensed">
 			              <tbody>
-								<tr><td>Week Number: </td><td id="table_weeknumber" align="right" style="padding-right:18px"></td></tr>
+								<tr><td>Weeks Analyzed: </td><td id="table_weekNumber1" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>MET Start: </td><td id="table_metstart" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>MET Stop: </td><td id="table_metstop" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>Date Start: </td><td id="table_datestart" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>Date Stop: </td><td id="table_datestop" align="right" style="padding-right:18px"></td></tr>
-								<!-- <tr><td>FAVA Sources: </td><td id="table_sources" align="right" style="padding-right:18px"></td></tr> -->
 			              </tbody>
 			            </table>  
  				    </div>
-				</div>
+				</div> -->
+
+					<center>
+
+			            <table class="table table-striped">
+			              <tbody>					
+								<tr><td>Weeks Number: </td><td id="table_weeknumber" align="right" style="padding-right:18px"></td></tr>
+								<tr><td>MET Start: </td><td id="table_metstart" align="right" style="padding-right:18px"></td></tr>
+								<tr><td>MET Stop: </td><td id="table_metstop" align="right" style="padding-right:18px"></td></tr>
+								<tr><td>Date Start: </td><td id="table_datestart" align="right" style="padding-right:18px"></td></tr>
+								<tr><td>Date Stop: </td><td id="table_datestop" align="right" style="padding-right:18px"></td></tr>
+			              </tbody>
+			            </table>  
+
+				    </center>
+
 			</div>
 			<!-- Position information ends here -->		
+
+
+			<!-- FAVA Analysis Overview start here -->		
+			<div class="panel panel-default"  style="height: 162px;">
+				<div class="panel-heading">
+			        <h3 class="panel-title">Analysis Overview</h3>
+			     </div>
+			     <!-- <div class="panel-body"> -->
+
+					<center>
+
+			            <table class="table table-striped">
+			              <tbody>					
+  								<!-- <tr><td>Weeks Analyzed</td><td td id="table_weekNumber2" align="right" style="padding-right:25px"></td></tr>			 -->
+  								<tr><td>FAVA Detections (>6&sigma;)</td><td td id="table_favaDetections" align="right" style="padding-right:25px"></td></tr>			
+  								<tr><td>Associated Detections<canvas id="AssociatedCanvas" width="40" height="20"></td><td td id="table_associatedDetections" align="right" style="padding-right:25px"></td></tr>			
+  								<tr><td>Unassociated Detections<canvas id="unassociatedCanvas" width="30" height="20"></canvas></td><td td id="table_unassociatedDetections" align="right" style="padding-right:25px"></td></tr>			
+			              </tbody>
+			            </table>  
+
+				    </center>
+
+		      	<!-- </div> -->
+		    </div>
+			<!-- FAVA Analysis Overview ends here -->	
 
 
 			<!-- FAVA Resources start here -->		
@@ -1029,7 +1107,7 @@
   								<tr><td><a href="index.php">FAVA Weekly Flare List</a></td><td td id="table_flarelist"></td></tr>			
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
-								<tr><td>2nd FAVA Catalog</td><td td id="table1_2FAV"></td></tr>
+								<tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
 			              </tbody>
 			            </table>  
@@ -1048,7 +1126,7 @@
 			     <div class="panel-body">
 
 			     <center>
-					<button data-toggle="modal" href="#ConfigureTableModal" type="submit" class="btn btn-primary" style="color:white;font-size: 12px;margin:5px">Configure Table</button>
+					<button data-toggle="modal" href="#ConfigureTableModal" type="submit" class="btn btn-primary" style="color:white;margin:5px">Configure Table</button>
               	</center>
 
 		      	</div>
@@ -1130,7 +1208,7 @@
 			<!-- FAVA Flare map panel start here -->	
 		    <div style="width:1550px; margin-left: 340px;">
 		 		<div class="panel panel-default" style="height: 600px;">
-					<div class="panel-heading"><h3 class="panel-title">FAVA Flare Map</h3></div>
+					<div class="panel-heading"><h3 class="panel-title">Weekly Flare Map</h3></div>
 
 				     <div class="panel-body">
 
@@ -1160,7 +1238,7 @@
 			<!-- Weekly analysis panel start here -->	
 		    <div style="width:1550px; margin-left: 340px;">
 			 	<div class="panel panel-default">
-					<div class="panel-heading"><h3 class="panel-title">Weekly FAVA Run</h3></div>
+					<div class="panel-heading"><h3 class="panel-title">Weekly FAVA Flares</h3></div>
 				    <div class="panel-body">
 				    	<center>
 			            <table class="table table-striped table-condensed table-bordered" id="dataTable" style="width:1000px;"></table>  

@@ -382,16 +382,9 @@
 		            if (point.ASSOC1 === 'None') {
 		            	// ctx.fillStyle = "rgba(0,103,0," + parseFloat(point.Size) * 0.115 + ")";
 		            	ctx.fillStyle = "rgba(0,179,0, 1.0)";
-
-						// ctx.lineWidth = '0.25';
-						// ctx.strokeStyle = "rgba(0, 103, 0, 1.0)"
-						
 		            } else {
 		            	// ctx.fillStyle = "rgba(0, 66, 255," + parseFloat(point.Size) * 0.115 + ")";
 						ctx.fillStyle = "rgba(154, 180, 255, 1.0)";
-
-						// ctx.lineWidth = '0.25';
-						// ctx.strokeStyle = "rgba(34, 88, 188, 1.0)"
 		            }
 		            ctx.arc(point_CanvasProjection[0], point_CanvasProjection[1], parseFloat(point.Size)/3, 0, 2 * Math.PI, false);
 		            ctx.fill()
@@ -731,8 +724,6 @@
 					ctx.fill()
 		            ctx.lineWidth = '0.25';
 					ctx.strokeStyle = 'black';
-
-					
 					ctx.stroke();
 					ctx.closePath();
 
@@ -746,11 +737,7 @@
 				}});
 
 			}
-
 		}
-
-
-
 
 		function fillTable(data) {
 
@@ -792,8 +779,6 @@
 
 			// Join the row array into one long string and place it inside the table element
 			$('#dataTable').html(row.join('')); 
-
-
 		}
 
 		// function populateMap(data) {
@@ -828,7 +813,6 @@
                 tip.style.visibility = "hidden";
                 var Selection = document.getElementById('Selection');
                 Selection.style.visibility = "hidden";   
-
 	        });
 
 
@@ -997,10 +981,10 @@
 			            <table class="table table-striped">
 			            <!-- <table class="table"> -->
 			              <tbody>					
-  								<tr><td>Weeks Analyzed</td><td td id="table_weekNumber"></td></tr>			
-  								<tr><td>FAVA Detections (>6&sigma;)</td><td td id="table_favaDetections"></td></tr>			
-  								<tr><td>Associated Detections<canvas id="AssociatedCanvas" width="40" height="20"></td><td td id="table_associatedDetections"></td></tr>			
-  								<tr><td>Unassociated Detections<canvas id="unassociatedCanvas" width="30" height="20"></canvas></td><td td id="table_unassociatedDetections"></td></tr>			
+  								<tr><td>Weeks Analyzed</td><td td id="table_weekNumber" align="right" style="padding-right:25px"></td></tr>		
+  								<tr><td>FAVA Detections (>6&sigma;)</td><td td id="table_favaDetections" align="right" style="padding-right:25px"></td></tr>		
+  								<tr><td>Associated Detections<canvas id="AssociatedCanvas" width="40" height="20"></td><td td id="table_associatedDetections" align="right" style="padding-right:25px"></td></tr>			
+  								<tr><td>Unassociated Detections<canvas id="unassociatedCanvas" width="30" height="20"></canvas></td><td td id="table_unassociatedDetections" align="right" style="padding-right:25px"></td></tr>		
 
 
 
@@ -1028,7 +1012,7 @@
   								<tr><td><a href="index.php">FAVA Weekly Flare List</a></td><td td id="table_flarelist"></td></tr>			
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
-								<tr><td><a href="#">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
+								<tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
 								<!-- <tr><td><a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwjSw8e3oKzKAhWMPz4KHU0bAMwQFggtMAE&url=http%3A%2F%2Ffermi.gsfc.nasa.gov%2Fscience%2Fmtgs%2Fsymposia%2F2015%2Fprogram%2Fwednesday%2Fsession11B%2FDKocevski.pdf&usg=AFQjCNGB3SKJx9skOJCGjHqWykqSw0R7eg&sig2=jKSTnYazQwXoMa2VHCbg5w">About FAVA</a></td><td td id="table_flarelist"></td></tr>			 -->
 								<!-- <tr><td><a href="#" data-target="#AnalysisModal" data-toggle="modal">About FAVA</a></td></tr>			 -->
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		

@@ -22,11 +22,12 @@
 
     if (isset($_GET['typeOfRequest']) == false) {
         echo '<BR><B>Usage Examples:</B><BR>';
-        echo 'queryFlaresDB.php?typeOfRequest=TimebinData<BR>';
-        echo 'queryFlaresDB.php?typeOfRequest=SourceList&week=100<BR>';
-        echo 'queryFlaresDB.php?typeOfRequest=SourceList&week=100&threshold=6Sigma<BR>';
-        echo 'queryFlaresDB.php?typeOfRequest=SourceReport&week=100&flare=1<BR>';
-        echo 'queryFlaresDB.php?typeOfRequest=MapData&ra=0&dec=0&radius=12&threshold=6Sigma<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=2FAV<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=TimebinData<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=SourceList&week=100<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=SourceList&week=100&threshold=6Sigma<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=SourceReport&week=100&flare=1<BR>';
+        echo 'queryFlaresDB_2FAV.php?typeOfRequest=MapData&ra=0&dec=0&radius=12&threshold=6Sigma<BR>';
 
     } else {
 
@@ -37,6 +38,41 @@
 
     // Initiate the database connection
     $db = new SQLite3 ('./db/fava_flares.db');
+
+    // Return the 2FAV catalog (2933 flares)
+    if ($typeOfRequest === '2FAV') { 
+
+        $and = ' and ';
+        $or = ' or ';
+
+        $cut1 = '((cast(week as float) < 340) and (cast(he_sigma as float)>6) and (cast(sundist as float)>10))';
+        $cut2 = '((cast(week as float) < 340) and (cast(sigma as float)>6) and (cast(sundist as float)>10))';
+        $cut3 = '((cast(week as float) < 340) and ((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
+
+        $cut4 = '((cast(week as float) < 340) and ((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
+        $cut5 = '((cast(week as float) < 340) and ((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
+        $cut6 = '((cast(week as float) < 340) and ((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
+
+        $queryStatement = 'SELECT flareID, num, best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6 . ' ORDER BY cast(best_ra as float) ASC';
+
+
+        // Query the database
+        $results = $db->query($queryStatement);
+
+        // Create an array to store the results
+        $data = array();
+
+        // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+            $data[] = $row;
+        }  
+
+        // Encode the PHP associative array into a JSON associative array
+        echo json_encode($data);
+
+
+    }
+
 
     // Return timebin data
     if ($typeOfRequest === 'TimebinData') { 

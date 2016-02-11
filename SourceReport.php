@@ -266,7 +266,7 @@
 
 			// Source Information
 			document.getElementById('table_week').innerHTML = sourceRecord['week'];
-			document.getElementById('table_flare').innerHTML = sourceRecord['num'];
+			document.getElementById('table_flare').innerHTML = parseInt(sourceRecord['num']).toString();
 
 			// Analysis Duration
 			document.getElementById('StartTime').innerHTML = sourceRecord['tmin'];
@@ -519,7 +519,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML), // Value of where the line will appear
+						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -672,7 +672,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML), // Value of where the line will appear
+						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -797,7 +797,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML), // Value of where the line will appear
+						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -936,7 +936,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML), // Value of where the line will appear
+						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -2405,7 +2405,7 @@
 		        if(data == '')
 		            return;
 		        
-		        JSONToCSVConvertor(data, "FAVA Relative Flux Lightcurve Data", true);
+		        JSONToCSVConvertor(data, "# FAVA Relative Flux Lightcurve Data", true);
 		    });
 
 
@@ -2644,7 +2644,7 @@
   								<tr><td><a href="index.php">FAVA Weekly Flare List</a></td><td td id="table_flarelist"></td></tr>			
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
-								<tr><td>2nd FAVA Catalog</td><td td id="table1_2FAV"></td></tr>
+								<tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
 			              </tbody>
 			            </table>  
