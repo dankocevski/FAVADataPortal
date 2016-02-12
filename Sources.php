@@ -1108,6 +1108,7 @@
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
 								<!-- <tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr> -->
+								<tr><td>2nd FAVA Catalog</td><td td id="table1_2FAV"></td></tr>
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
 			              </tbody>
 			            </table>  
