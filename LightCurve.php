@@ -2088,8 +2088,23 @@
 		    var dec_urlEncoded = encodeURIComponent(dec);
 		    var radius_urlEncoded = encodeURIComponent(radius);
 
-		      var thresholdRequest = '6Sigma';
-		      var thresholdRequest_urlEncoded = encodeURIComponent(thresholdRequest);
+            <?php
+
+				if ( (isset($_GET['threshold'])) ) {
+				
+					$thresholdRequest = $_GET['threshold'];
+
+					echo "var thresholdRequest = '$thresholdRequest';";
+
+	            } else {
+
+	            	echo "var thresholdRequest = '6Sigma';";
+
+	            }
+
+            ?>  
+
+		    var thresholdRequest_urlEncoded = encodeURIComponent(thresholdRequest);
 
 		    // Set the request type
 		    var typeOfRequest = 'MapData';
@@ -2445,7 +2460,7 @@
   								<tr><td><a href="index.php">FAVA Weekly Flare List</a></td><td td id="table_flarelist"></td></tr>			
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
-								<tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
+								<!-- <tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr> -->
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
 			              </tbody>
 			            </table>  
