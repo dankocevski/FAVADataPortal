@@ -536,6 +536,8 @@
 			// Setup the URL
 			var URL = "queryDB_2FAV.php?typeOfRequest=" + typeOfRequest_urlEncoded + "&week=" + weekNumber_urlEncoded + "&threshold=" + thresholdRequest_urlEncoded;
 
+			console.log(URL)
+
 			// Perform an ajax request
 			$.ajax({url: URL, success: function(responseText){
 
