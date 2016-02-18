@@ -812,7 +812,7 @@
 			    points.push(point);
 
 				// Determine the number of associated and unassociated sources
-				if (sourceRecord['fglassoc'] === 'none') {
+				if (sourceRecord['fglassoc'] === 'None') {
 					numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
 				} else {
 					numberOfAssocaitedSources = numberOfAssocaitedSources + 1
