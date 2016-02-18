@@ -787,13 +787,6 @@
 			var numberOfAssocaitedSources = 0
 			var numberOfUnassocaitedSources = 0
 
-			// Determine the number of associated and unassociated sources
-			if (sourceRecord['fglassoc'] === 'none') {
-				numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
-			} else {
-				numberOfAssocaitedSources = numberOfAssocaitedSources + 1
-			}
-
 			console.log(data.length);
 
 			// Loop through each data entry and extract the values
@@ -815,6 +808,13 @@
 
 			    // Add the point to the points array
 			    points.push(point);
+
+				// Determine the number of associated and unassociated sources
+				if (sourceRecord['fglassoc'] === 'none') {
+					numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
+				} else {
+					numberOfAssocaitedSources = numberOfAssocaitedSources + 1
+				}
 
 			}
 
