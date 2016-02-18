@@ -2089,19 +2089,13 @@
 		    var radius_urlEncoded = encodeURIComponent(radius);
 
             <?php
-
 				if ( (isset($_GET['threshold'])) ) {
-				
 					$thresholdRequest = $_GET['threshold'];
-
 					echo "var thresholdRequest = '$thresholdRequest';";
-
 	            } else {
-
 	            	echo "var thresholdRequest = '6Sigma';";
 
 	            }
-
             ?>  
 
 		    var thresholdRequest_urlEncoded = encodeURIComponent(thresholdRequest);

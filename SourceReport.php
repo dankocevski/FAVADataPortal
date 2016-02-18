@@ -2272,8 +2272,17 @@
 		    var dec_urlEncoded = encodeURIComponent(dec);
 		    var radius_urlEncoded = encodeURIComponent(radius);
 
-		      var thresholdRequest = '6Sigma';
-		      var thresholdRequest_urlEncoded = encodeURIComponent(thresholdRequest);
+            <?php
+				if ( (isset($_GET['threshold'])) ) {
+					$thresholdRequest = $_GET['threshold'];
+					echo "var thresholdRequest = '$thresholdRequest';";
+	            } else {
+	            	echo "var thresholdRequest = '6Sigma';";
+
+	            }
+            ?>  
+
+			var thresholdRequest_urlEncoded = encodeURIComponent(thresholdRequest);
 
 		    // Set the request type
 		    var typeOfRequest = 'MapData';

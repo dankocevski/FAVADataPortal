@@ -788,7 +788,7 @@
 			var numberOfUnassocaitedSources = 0
 
 			// Determine the number of associated and unassociated sources
-			if (sourceRecord['fglassoc'] === 'None') {
+			if (sourceRecord['fglassoc'] === 'none') {
 				numberOfUnassocaitedSources = numberOfUnassocaitedSources + 1
 			} else {
 				numberOfAssocaitedSources = numberOfAssocaitedSources + 1
@@ -1320,7 +1320,7 @@
                                 <input type="checkbox" name="select" checked value="20" onclick="toggleColumn(this)">  FAVA Significance (High Energy)<br>
                                 <input type="checkbox" name="select" checked value="21" onclick="toggleColumn(this)">  Sun Distance<br>
                                 <input type="checkbox" name="select" value="22" onclick="toggleColumn(this)">  Variability Index<br>
-                                <input type="checkbox" name="select" checked value="23" onclick="toggleColumn(this)">  FAVA Association<br>
+                                <input type="checkbox" name="select" value="23" onclick="toggleColumn(this)">  FAVA Association<br>
                                 <input type="checkbox" name="select" checked value="24" onclick="toggleColumn(this)">  3FGL Association<br>
                                 <input type="checkbox" name="select" checked value="25" onclick="toggleColumn(this)">  Catalog Association<br>
 
