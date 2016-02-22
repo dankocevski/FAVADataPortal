@@ -38,6 +38,12 @@
 	<script src="./js/Highcharts/highcharts-more.js"></script>
 	<script src="./js/Highcharts/modules/exporting.js"></script>
 
+	<!-- Javascript SVG parser and renderer on Canvas -->
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+
+
 	<!-- Test -->
 
 	<style type="text/css">
@@ -328,7 +334,7 @@
 			document.getElementById('he_index').innerHTML = sourceRecord['he_index'] + ' &plusmn; ' + sourceRecord['he_indexerr'];
 
 			// Associations
-			document.getElementById('favasrc').innerHTML = sourceRecord['favasrc'];
+			// document.getElementById('favasrc').innerHTML = sourceRecord['favasrc'];
 			document.getElementById('fglassoc').innerHTML = sourceRecord['fglassoc'];
 			document.getElementById('assoc').innerHTML = sourceRecord['assoc'];			
 		}
@@ -1266,6 +1272,7 @@
 		        
 		    var svg = d3.select("#FlareMap").append("svg")
 		        .attr('class', 'map')
+		        .attr('xmlns', 'http //www.w3.org/2000/svg')
 		        .attr("width", width)
 		        .attr("height", height)
 		        .call(zoom)
@@ -1434,17 +1441,21 @@
 		      // .style("stroke-width", "1.5px")
 		      .attr("transform", function(d) {
 		        return "translate(" + projection([
-		          d.fava_ra * -1,
-		          d.fava_dec
+		          d.best_ra * -1,
+		          d.best_dec
 		        ]) + ")";
 		      })
 
 		      .on("mouseover", function(d) {
 
-					// var lightcurveLink = "<a href=\"http://http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_lc_v5/" + d.Source_Name.replace(' ', '_').replace('+','p').replace('.','d').replace('-','m') + "_lc.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Light Curve</a>";
+					// var simbadLink = "<a href=\"http://http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_lc_v5/" + d.Source_Name.replace(' ', '_').replace('+','p').replace('.','d').replace('-','m') + "_lc.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Simbad</a>";
 					// var spectrum = "<a href=\"http://http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_spec_v5/"  + d.Source_Name.replace(' ', '_').replace('.','d').replace('+','p') + "_spec.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Spectrum</a>";
 					// var innerHTML =  d.Source_Name + '<BR>RA: ' + d.RAJ2000 + ', Dec: ' + d.DEJ2000 + '<BR>Association: ' + d.ASSOC1 + '<BR>' + lightcurveLink  + ' | ' + spectrum;
-					var innerHTML =  'FAVA_' + d.flareID + '<BR>RA: ' + d.fava_ra + ', Dec: ' + d.fava_dec + '<BR>Week: ' + d.week + '<BR>MET: ' + d.tmin;
+
+					var simbadLink = '<a href="#"?>Simbad</a>'
+					var nedLink = '<a href="#"?>NED</a>'
+
+					var innerHTML =  'FAVA_' + d.flareID + '<BR>MET: ' + d.tmin + '<BR>RA: ' + d.best_ra + ', Dec: ' + d.best_dec + '<BR>Error: +/-' + d.best_r95 + '<BR>Source: ' + document.getElementById('table_source').innerHTML + '<BR>' + simbadLink + ' | ' + nedLink; 
 
 					// Select the tooltip area to the webpage
 					var tooltip_map = d3.select(".tooltip_map")
@@ -1456,10 +1467,8 @@
 					   .duration(200)
 					   .style("opacity", .9);
 					tooltip_map.html( innerHTML )
-					   // .style("left", projection([d.fava_ra * -1,d.fava_dec])[0] + offsetLeft - 60 + "px")
-					   // .style("top", projection([d.fava_ra * -1,d.fava_dec])[1] + offsetTop - 80 + "px")
 					   .style("left", event.pageX - 85 + "px")
-					   .style("top", event.pageY - 115 + "px")
+					   .style("top", event.pageY - 150 + "px")
 
 					})
 
@@ -1482,11 +1491,11 @@
 		      .style("fill", "none")
 		      .style("stroke", "red")
 		      .style("stroke-dasharray", ("3, 3"))
-		      .attr("r", function(d) { return d.le_r95*34 })
+		      .attr("r", function(d) { return d.best_r95*34 })
 		      .attr("transform", function(d) {
 		        return "translate(" + projection([
-		          d.fava_ra * -1,
-		          d.fava_dec
+		          d.best_ra * -1,
+		          d.best_dec
 		        ]) + ")";
 		      });
 
@@ -1504,8 +1513,8 @@
 		      // .attr("y", function(d) { return projection([d.location.longitude,d.location.latitude])[1]-10 })
 		      .attr("transform", function(d) {
 		        return "translate(" + projection([
-		          d.fava_ra * -1,
-		          d.fava_dec
+		          d.best_ra * -1,
+		          d.best_dec
 		        ]) + ")";
 		      })
 		      .text(function(d) { return 'FAVA_' + d.flareID} )
@@ -1864,7 +1873,34 @@
 		                    return 0.9;        
 		                });
 		        }
+
+
+
+
+
+
 		    }
+
+
+		    function exportMap() {
+
+				var svg = document.querySelectorAll('svg')[4]
+				var svgData = new XMLSerializer().serializeToString( svg );
+
+				var canvas = document.createElement( "canvas" );
+				var ctx = canvas.getContext( "2d" );
+
+				var img = document.createElement( "img" );
+				img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
+
+
+				ctx.drawImage( img, 0, 0 );
+				var img_new  = canvas.toDataURL("image/png");
+				document.write('<img src="'+img_new+'"/>');
+
+		    }
+
+
 
 		    // function toggleLabels() {
 
@@ -1906,6 +1942,7 @@
 		    d3.selectAll('.button, #zoom_in').on('click', zoomClick);
 		    d3.selectAll('.button, #zoom_out').on('click', zoomClick);
 		    d3.selectAll('.button, #LabelToggle').on('click', toggleLabels);
+		    d3.selectAll('.button, #ExportButton').on('click', exportMap);
 
 
 		    // Update the data
@@ -2553,6 +2590,7 @@
 								<tr><td>Source: </td><td id="table_source" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>Galactic l: </td><td id="table_galb" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>Galactic b: </td><td id="table_gall" align="right" style="padding-right:18px"></td></tr>
+
 			              </tbody>
 			            </table>  
 
@@ -2631,15 +2669,41 @@
 			                </tr>
 			              </thead>
 			              <tbody>						
-   								<tr><td>FAVA Association: </td><td td id="favasrc" align="right" style="padding-right:18px"></td></tr>		
+   								<!-- <tr><td>FAVA Association: </td><td td id="favasrc" align="right" style="padding-right:18px"></td></tr>		 -->
 								<tr><td>3FGL Association: </td><td id="fglassoc" align="right" style="padding-right:18px"></td></tr>
 								<tr><td>Catalog Association: </td><td td id="assoc" align="right" style="padding-right:18px"></td></tr>
 			              </tbody>
 			            </table>  
+
  				    </div>
 				</div>
 			</div>
 			<!-- Position information ends here -->		
+
+			<!-- FAVA Resources start here -->		
+			<div class="panel panel-default" style="height: 152px;">
+				<div class="panel-heading">
+			        <h3 class="panel-title">Catalog Resources</h3>
+			     </div>
+
+					<center>
+
+			            <table class="table table-striped">
+			            <!-- <table class="table"> -->
+			              <tbody>					
+  								<tr><td><a href="index.php">SIMBAD Astronomical Database</a></td><td td id="table_flarelist"></td></tr>			
+  								<tr><td><a href="LightCurve.php"> NASA Extragalactic Database (NED)</a></td><td td id="table_lightcurve"></td></tr>
+  								<tr><td><a href="https://heasarc.gsfc.nasa.gov/cgi-bin/W3Browse/w3browse.pl">HEASARC Database</a></td><td td id="table_flarelist"></td></tr>			
+
+  								
+			              </tbody>
+			            </table>  
+
+				    </center>
+
+		    </div>
+			<!-- FAVA Resources ends here -->	
+
 
 			<!-- FAVA Resources start here -->		
 			<div class="panel panel-default" style="height: 225px;">
@@ -2810,6 +2874,10 @@
 
 		</div>
 		<!-- Content ends here -->
+
+		<canvas width="1250" height="700" id="exportCanvas"></canvas>
+
+
 
 	<!-- Main ends here -->
 	</div>

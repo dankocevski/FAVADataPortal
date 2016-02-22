@@ -639,6 +639,8 @@
 				<th style="text-align: center;">Best RA</th> \
 				<th style="text-align: center;">Best Dec</th> \
 				<th style="text-align: center;">Best r95</th> \
+				<th style="text-align: center;">Best Galactic l</th> \
+				<th style="text-align: center;">Best Galactic b</th> \
 				<th style="text-align: center;">Position Source</th> \
 				<th style="text-align: center;">FAVA RA</th> \
 				<th style="text-align: center;">FAVA Dec</th> \
@@ -718,6 +720,14 @@
 
 					} else if (key === 'bestPositionSource') {
 
+						// Add the best gall and galb
+						row[++j] = calculateGalacticCoordinates(sourceRecord['best_ra'], sourceRecord['best_dec'])[0].toFixed(2)
+						row[++j] = '</td>';
+						row[++j] ='<td style="text-align: center;">';
+						row[++j] = calculateGalacticCoordinates(sourceRecord['best_ra'], sourceRecord['best_dec'])[1].toFixed(2)
+						row[++j] = '</td>';
+						row[++j] ='<td style="text-align: center;">';
+
 						if (sourceRecord[key] === 'low') {
 							row[++j] = 'Like LE'
 						} else if (sourceRecord[key] === 'high') {
@@ -725,7 +735,8 @@
 						} else {
 							row[++j] = sourceRecord[key];
 						}
-						
+
+						console.log(calculateGalacticCoordinates(sourceRecord['best_ra'], sourceRecord['best_dec']))
 
 					} else if (key === 'he_avnev') {
 
@@ -870,6 +881,81 @@
 
             renderFrame();
         }
+
+		// Convert RA and Dec to galactic coordinates
+		function calculateGalacticCoordinates(ra, dec) {
+
+			// Adopted from http://www.robertmartinayers.org/tools/coordinates.html
+			// Copyright Robert Martin Ayers, 2009, 2011, 2014.  All rights reserved.
+
+			// Make sure the input are floats
+			ra = parseFloat(ra);
+			dec = parseFloat(dec);
+
+			// Define some constants			
+			pi = 3.1415926536
+			toDegrees = 180.0/pi;
+			degrees2arcseconds = 3600.;
+			hours2degrees = 360/24.
+
+			// From J2000 to "galactic coordinates"
+			// Spherical Astronomy by Green, equation 14.55, page 355
+			var JtoG = new Array (
+			-0.054876, -0.873437, -0.483835,
+			 0.494109, -0.444830,  0.746982,
+			-0.867666, -0.198076,  0.455984 );
+
+			var radec = new Array (99.0, 99.0);
+
+			var ra;
+			var dec;
+
+			// Converting the user supplied ra and dec from degrees to arcseconds
+			globalJRA = parseFloat(ra) * hours2degrees * degrees2arcseconds;
+			globalJDec = parseFloat(dec) * degrees2arcseconds;
+
+
+			// Make sure that the coordinates make sense
+			// if ( (globalJRA >= 1296000) || (globalJRA < 0) ) 
+			// {  
+			//     return 0; // Acting like exit 
+			// }
+			// if ( (globalJDec > 324000) || (globalJDec < -324000) ) 
+			// { 
+			//     return 0; // Acting like exit 
+			// }
+
+			var radec1 = new Array ( (globalJRA/3600.0) / toDegrees, 
+			(globalJDec/3600.0) / toDegrees );
+
+			radec = radec1;
+			matrix = JtoG;
+
+			var r0 = new Array ( 
+			Math.cos(radec[0]) * Math.cos(radec[1]),
+			Math.sin(radec[0]) * Math.cos(radec[1]),
+			Math.sin(radec[1]) );
+
+			var s0 = new Array (
+			r0[0]*matrix[0] + r0[1]*matrix[1] + r0[2]*matrix[2], 
+			r0[0]*matrix[3] + r0[1]*matrix[4] + r0[2]*matrix[5], 
+			r0[0]*matrix[6] + r0[1]*matrix[7] + r0[2]*matrix[8] ); 
+
+			var r = Math.sqrt ( s0[0]*s0[0] + s0[1]*s0[1] + s0[2]*s0[2] ); 
+
+			var result = new Array ( 0.0, 0.0 );
+			result[1] = Math.asin ( s0[2]/r ); // New dec in range -90.0 -- +90.0 
+			// or use sin^2 + cos^2 = 1.0  
+			var cosaa = ( (s0[0]/r) / Math.cos(result[1] ) );
+			var sinaa = ( (s0[1]/r) / Math.cos(result[1] ) );
+			result[0] = Math.atan2 (sinaa,cosaa);
+
+			if ( result[0] < 0.0 ) {
+				result[0] = result[0] + pi + pi;
+			}
+
+			return result
+		}
 
 
 		$(function() {
@@ -1305,49 +1391,51 @@
                                 <input type="checkbox" name="select" checked value="3" onclick="toggleColumn(this)">  Best RA (J2000.0)<br>
                                 <input type="checkbox" name="select" checked value="4" onclick="toggleColumn(this)">  Best Dec (J2000.0)<br>
                                 <input type="checkbox" name="select" checked value="5" onclick="toggleColumn(this)">  Best r95 (J2000.0)<br>
-                                <input type="checkbox" name="select" checked value="6" onclick="toggleColumn(this)">  Position Source<br>
-                                <input type="checkbox" name="select" value="7" onclick="toggleColumn(this)">  FAVA RA (J2000.0)<br>
-                                <input type="checkbox" name="select" value="8" onclick="toggleColumn(this)">  FAVA Dec (J2000.0)<br>
-                                <input type="checkbox" name="select" value="9" onclick="toggleColumn(this)">  FAVA lbin<br>
-                                <input type="checkbox" name="select" value="10" onclick="toggleColumn(this)">  FAVA bbin<br>
-                                <input type="checkbox" name="select" value="11" onclick="toggleColumn(this)">  FAVA Galactic l<br>
-                                <input type="checkbox" name="select" value="12" onclick="toggleColumn(this)">  FAVA Galactic b<br>
-                                <input type="checkbox" name="select" value="13" onclick="toggleColumn(this)">  MET Start<br>
-                                <input type="checkbox" name="select" value="14" onclick="toggleColumn(this)">  MET Stop<br>
-                                <input type="checkbox" name="select" checked value="15" onclick="toggleColumn(this)">  Expected Number of Events (Low Energy)<br>
-                                <input type="checkbox" name="select" checked value="16" onclick="toggleColumn(this)">  Observed Number of Events (Low Energy)<br>
-                                <input type="checkbox" name="select" checked value="17" onclick="toggleColumn(this)">  FAVA Significance (Low Energy)<br>
-                                <input type="checkbox" name="select" checked value="18" onclick="toggleColumn(this)">  Expected Number of Events (High Energy)<br>
-                                <input type="checkbox" name="select" checked value="19" onclick="toggleColumn(this)">  Observed Number of Events (High Energy)<br>
-                                <input type="checkbox" name="select" checked value="20" onclick="toggleColumn(this)">  FAVA Significance (High Energy)<br>
-                                <input type="checkbox" name="select" checked value="21" onclick="toggleColumn(this)">  Sun Distance<br>
-                                <input type="checkbox" name="select" value="22" onclick="toggleColumn(this)">  Variability Index<br>
-                                <input type="checkbox" name="select" value="23" onclick="toggleColumn(this)">  FAVA Association<br>
-                                <input type="checkbox" name="select" checked value="24" onclick="toggleColumn(this)">  3FGL Association<br>
-                                <input type="checkbox" name="select" checked value="25" onclick="toggleColumn(this)">  Catalog Association<br>
+                                <input type="checkbox" name="select" checked value="6" onclick="toggleColumn(this)">  Best Galactic l<br>
+                                <input type="checkbox" name="select" checked value="7" onclick="toggleColumn(this)">  Best Galactic b<br>
+                                <input type="checkbox" name="select" checked value="8" onclick="toggleColumn(this)">  Position Source<br>
+                                <input type="checkbox" name="select" value="9" onclick="toggleColumn(this)">  FAVA RA (J2000.0)<br>
+                                <input type="checkbox" name="select" value="10" onclick="toggleColumn(this)">  FAVA Dec (J2000.0)<br>
+                                <input type="checkbox" name="select" value="11" onclick="toggleColumn(this)">  FAVA lbin<br>
+                                <input type="checkbox" name="select" value="12" onclick="toggleColumn(this)">  FAVA bbin<br>
+                                <input type="checkbox" name="select" value="13" onclick="toggleColumn(this)">  FAVA Galactic l<br>
+                                <input type="checkbox" name="select" value="14" onclick="toggleColumn(this)">  FAVA Galactic b<br>
+                                <input type="checkbox" name="select" value="15" onclick="toggleColumn(this)">  MET Start<br>
+                                <input type="checkbox" name="select" value="16" onclick="toggleColumn(this)">  MET Stop<br>
+                                <input type="checkbox" name="select" checked value="17" onclick="toggleColumn(this)">  Expected Number of Events (Low Energy)<br>
+                                <input type="checkbox" name="select" checked value="18" onclick="toggleColumn(this)">  Observed Number of Events (Low Energy)<br>
+                                <input type="checkbox" name="select" checked value="19" onclick="toggleColumn(this)">  FAVA Significance (Low Energy)<br>
+                                <input type="checkbox" name="select" checked value="20" onclick="toggleColumn(this)">  Expected Number of Events (High Energy)<br>
+                                <input type="checkbox" name="select" checked value="21" onclick="toggleColumn(this)">  Observed Number of Events (High Energy)<br>
+                                <input type="checkbox" name="select" checked value="22" onclick="toggleColumn(this)">  FAVA Significance (High Energy)<br>
+                                <input type="checkbox" name="select" checked value="23" onclick="toggleColumn(this)">  Sun Distance<br>
+                                <input type="checkbox" name="select" value="24" onclick="toggleColumn(this)">  Variability Index<br>
+                                <input type="checkbox" name="select" value="25" onclick="toggleColumn(this)">  FAVA Association<br>
+                                <input type="checkbox" name="select" checked value="26" onclick="toggleColumn(this)">  3FGL Association<br>
+                                <input type="checkbox" name="select" checked value="27" onclick="toggleColumn(this)">  Catalog Association<br>
 
 
                             </div>
 
                             <div style="margin-left: 25px; float:left;">
 								<b>Likelihood Analysis (100 - 800 MeV):</b><br>
-                                <input type="checkbox" name="select" checked value="26" onclick="toggleColumn(this)">  Likelihood TS (Low Energy)<br>
-                                <input type="checkbox" name="select" value="27" onclick="toggleColumn(this)">  Likelihood Significance (Low Energy)<br>
-                                <input type="checkbox" name="select" value="28" onclick="toggleColumn(this)">  Likelihood RA (Low Energy)<br>
-                                <input type="checkbox" name="select" value="29" onclick="toggleColumn(this)">  Likelihood Dec (Low Energy)<br>
-                                <input type="checkbox" name="select" value="30" onclick="toggleColumn(this)">  Likelihood Galactic l (Low Energy)<br>
-                                <input type="checkbox" name="select" value="31" onclick="toggleColumn(this)">  Likelihood Galactic b (Low Energy)<br>
-                                <input type="checkbox" name="select" value="32" onclick="toggleColumn(this)">  Likelihood 95% Position Error (Low Energy)<br>
-                                <input type="checkbox" name="select" value="33" onclick="toggleColumn(this)">  TS Map Contour Flag (Low Energy)<br>
-                                <input type="checkbox" name="select" value="34" onclick="toggleColumn(this)">  Likelihood Sun Distance (Low Energy)<br>
-                                <input type="checkbox" name="select" value="35" onclick="toggleColumn(this)">  TS Map Border Distance (Low Energy)<br>
-                                <div style="display: none"><input type="checkbox" name="select"  value="36" onclick="toggleColumn(this)">  le_ffsigma<br></div>
-                                <div style="display: none"><input type="checkbox" name="select"  value="37" onclick="toggleColumn(this)">  le_hightsfrac<br></div>
-                                <div style="display: none"><input type="checkbox" name="select"  value="38" onclick="toggleColumn(this)">  le_gtlts<br></div>
-                                <input type="checkbox" checked name="select" value="39" onclick="toggleColumn(this)">  Likelihood Flux (Low Energy)<br>
-                                <input type="checkbox" name="select" value="40" onclick="toggleColumn(this)">  Likelihood Flux Error (Low Energy)<br>
-                                <input type="checkbox" checked name="select" value="41" onclick="toggleColumn(this)">  Likelihood Index (Low Energy)<br>
-                                <input type="checkbox" name="select" value="42" onclick="toggleColumn(this)">  Likelihood Index Error (Low Energy)<br>
+                                <input type="checkbox" name="select" checked value="28" onclick="toggleColumn(this)">  Likelihood TS (Low Energy)<br>
+                                <input type="checkbox" name="select" value="29" onclick="toggleColumn(this)">  Likelihood Significance (Low Energy)<br>
+                                <input type="checkbox" name="select" value="30" onclick="toggleColumn(this)">  Likelihood RA (Low Energy)<br>
+                                <input type="checkbox" name="select" value="31" onclick="toggleColumn(this)">  Likelihood Dec (Low Energy)<br>
+                                <input type="checkbox" name="select" value="32" onclick="toggleColumn(this)">  Likelihood Galactic l (Low Energy)<br>
+                                <input type="checkbox" name="select" value="33" onclick="toggleColumn(this)">  Likelihood Galactic b (Low Energy)<br>
+                                <input type="checkbox" name="select" value="34" onclick="toggleColumn(this)">  Likelihood 95% Position Error (Low Energy)<br>
+                                <input type="checkbox" name="select" value="35" onclick="toggleColumn(this)">  TS Map Contour Flag (Low Energy)<br>
+                                <input type="checkbox" name="select" value="36" onclick="toggleColumn(this)">  Likelihood Sun Distance (Low Energy)<br>
+                                <input type="checkbox" name="select" value="37" onclick="toggleColumn(this)">  TS Map Border Distance (Low Energy)<br>
+                                <div style="display: none"><input type="checkbox" name="select"  value="38" onclick="toggleColumn(this)">  le_ffsigma<br></div>
+                                <div style="display: none"><input type="checkbox" name="select"  value="39" onclick="toggleColumn(this)">  le_hightsfrac<br></div>
+                                <div style="display: none"><input type="checkbox" name="select"  value="40" onclick="toggleColumn(this)">  le_gtlts<br></div>
+                                <input type="checkbox" checked name="select" value="41" onclick="toggleColumn(this)">  Likelihood Flux (Low Energy)<br>
+                                <input type="checkbox" name="select" value="42" onclick="toggleColumn(this)">  Likelihood Flux Error (Low Energy)<br>
+                                <input type="checkbox" checked name="select" value="43" onclick="toggleColumn(this)">  Likelihood Index (Low Energy)<br>
+                                <input type="checkbox" name="select" value="44" onclick="toggleColumn(this)">  Likelihood Index Error (Low Energy)<br>
 
 	                            <div id="ThresholdSelectionDiv" style="margin-top: 50px;">
 	                                <b>Flare Threshold Selection:</b><br>
@@ -1359,40 +1447,36 @@
 	                                </div>
 	                            </div>
 
-
                             </div>
-
-
-
 
 
                             <div style="margin-left: 25px; float:left;">
 
 								<b>Likelihood Analysis (800 MeV - 300 GeV):</b><br>
-                                <input type="checkbox" name="select" checked value="43" onclick="toggleColumn(this)">  Likelihood TS (High Energy)<br>
-                                <input type="checkbox" name="select" value="44" onclick="toggleColumn(this)">  Likelihood Significance (High Energy)<br>
-                                <input type="checkbox" name="select" value="45" onclick="toggleColumn(this)">  Likelihood RA (High Energy)<br>
-                                <input type="checkbox" name="select" value="46" onclick="toggleColumn(this)">  Likelihood Dec (High Energy)<br>
-                                <input type="checkbox" name="select" value="47" onclick="toggleColumn(this)">  Likelihood Galactic l (High Energy)<br>
-                                <input type="checkbox" name="select" value="48" onclick="toggleColumn(this)">  Likelihood Galactic b (High Energy)<br>
-                                <input type="checkbox" name="select" value="49" onclick="toggleColumn(this)">  Likelihood 95% Position Error (High Energy)<br>
-                                <input type="checkbox" name="select" value="50" onclick="toggleColumn(this)">  TS Map Contour Flag (High Energy)<br>
-                                <input type="checkbox" name="select" value="51" onclick="toggleColumn(this)">  Likelihood Sun Distance (High Energy)<br>
-                                <input type="checkbox" name="select" value="52" onclick="toggleColumn(this)">  TS Map Border Distance (High Energy)<br>
-                                <div style="display: none"><input type="checkbox" name="select"  value="53" onclick="toggleColumn(this)">  he_ffsigma<br></div>
-                                <div style="display: none"><input type="checkbox" name="select"  value="54" onclick="toggleColumn(this)">  he_hightsfrac<br></div>
-                                <div style="display: none"><input type="checkbox" name="select"  value="55" onclick="toggleColumn(this)">  he_gtlts<br></div>
-                                <div style="display: none"><input type="checkbox" name="select"  value="56" onclick="toggleColumn(this)">  he_le_dist<br></div>
-                                <input type="checkbox" checked name="select" value="57" onclick="toggleColumn(this)">  Likelihood Flux (High Energy)<br>
-                                <input type="checkbox" name="select" value="58" onclick="toggleColumn(this)">  Likelihood Flux Error (High Energy)<br>
-                                <input type="checkbox" checked name="select" value="59" onclick="toggleColumn(this)">  Likelihood Index (High Energy)<br>
-                                <input type="checkbox" name="select" value="60" onclick="toggleColumn(this)">  Likelihood Index Error (High Energy)<br>
+                                <input type="checkbox" name="select" checked value="45" onclick="toggleColumn(this)">  Likelihood TS (High Energy)<br>
+                                <input type="checkbox" name="select" value="46" onclick="toggleColumn(this)">  Likelihood Significance (High Energy)<br>
+                                <input type="checkbox" name="select" value="47" onclick="toggleColumn(this)">  Likelihood RA (High Energy)<br>
+                                <input type="checkbox" name="select" value="48" onclick="toggleColumn(this)">  Likelihood Dec (High Energy)<br>
+                                <input type="checkbox" name="select" value="49" onclick="toggleColumn(this)">  Likelihood Galactic l (High Energy)<br>
+                                <input type="checkbox" name="select" value="50" onclick="toggleColumn(this)">  Likelihood Galactic b (High Energy)<br>
+                                <input type="checkbox" name="select" value="51" onclick="toggleColumn(this)">  Likelihood 95% Position Error (High Energy)<br>
+                                <input type="checkbox" name="select" value="52" onclick="toggleColumn(this)">  TS Map Contour Flag (High Energy)<br>
+                                <input type="checkbox" name="select" value="53" onclick="toggleColumn(this)">  Likelihood Sun Distance (High Energy)<br>
+                                <input type="checkbox" name="select" value="54" onclick="toggleColumn(this)">  TS Map Border Distance (High Energy)<br>
+                                <div style="display: none"><input type="checkbox" name="select"  value="55" onclick="toggleColumn(this)">  he_ffsigma<br></div>
+                                <div style="display: none"><input type="checkbox" name="select"  value="56" onclick="toggleColumn(this)">  he_hightsfrac<br></div>
+                                <div style="display: none"><input type="checkbox" name="select"  value="57" onclick="toggleColumn(this)">  he_gtlts<br></div>
+                                <div style="display: none"><input type="checkbox" name="select"  value="58" onclick="toggleColumn(this)">  he_le_dist<br></div>
+                                <input type="checkbox" checked name="select" value="59" onclick="toggleColumn(this)">  Likelihood Flux (High Energy)<br>
+                                <input type="checkbox" name="select" value="60" onclick="toggleColumn(this)">  Likelihood Flux Error (High Energy)<br>
+                                <input type="checkbox" checked name="select" value="61" onclick="toggleColumn(this)">  Likelihood Index (High Energy)<br>
+                                <input type="checkbox" name="select" value="62" onclick="toggleColumn(this)">  Likelihood Index Error (High Energy)<br>
 
                                 <BR>
-                                <div style="display: none"><input type="checkbox" name="select" value="61" onclick="toggleColumn(this)"> Week<br></div>
-                                <div style="display: none"><input type="checkbox" name="select" value="62" onclick="toggleColumn(this)">  Date Start<br></div>
-                                <div style="display: none"><input type="checkbox" name="select" value="63" onclick="toggleColumn(this)">  Date Stop<br></div>
-                                <div style="display: none"><input type="checkbox" name="select" value="64" onclick="toggleColumn(this)">  Date Stop<br></div>
+                                <div style="display: none"><input type="checkbox" name="select" value="63" onclick="toggleColumn(this)"> Week<br></div>
+                                <div style="display: none"><input type="checkbox" name="select" value="64" onclick="toggleColumn(this)">  Date Start<br></div>
+                                <div style="display: none"><input type="checkbox" name="select" value="65" onclick="toggleColumn(this)">  Date Stop<br></div>
+                                <div style="display: none"><input type="checkbox" name="select" value="66" onclick="toggleColumn(this)">  Date Stop<br></div>
 
                             </div>
 
