@@ -1448,14 +1448,13 @@
 
 		      .on("mouseover", function(d) {
 
-					// var simbadLink = "<a href=\"http://http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_lc_v5/" + d.Source_Name.replace(' ', '_').replace('+','p').replace('.','d').replace('-','m') + "_lc.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Simbad</a>";
-					// var spectrum = "<a href=\"http://http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_spec_v5/"  + d.Source_Name.replace(' ', '_').replace('.','d').replace('+','p') + "_spec.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Spectrum</a>";
-					// var innerHTML =  d.Source_Name + '<BR>RA: ' + d.RAJ2000 + ', Dec: ' + d.DEJ2000 + '<BR>Association: ' + d.ASSOC1 + '<BR>' + lightcurveLink  + ' | ' + spectrum;
+		      		// Generate the simbad and ned links
+					var simbadLink = "<a href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Coord=" + d.best_ra + "+" + d.best_dec + "&Radius=" + d.best_r95 * 60 + "\" target=\"_blank\">Simbad Search</a>";
+					var nedLink = "<a href=\"http://ned.ipac.caltech.edu/cgi-bin/nph-objsearch?search_type=Near+Position+Search&lon=" + d.best_ra + "d&lat=" + d.best_dec + "&Radius=" + d.best_r95 * 60 + "\" target=\"_blank\">NED Search</a>";
 
-					var simbadLink = '<a href="#"?>Simbad</a>'
-					var nedLink = '<a href="#"?>NED</a>'
-
+					// Generate the tooltip contents
 					var innerHTML =  'FAVA_' + d.flareID + '<BR>MET: ' + d.tmin + '<BR>RA: ' + d.best_ra + ', Dec: ' + d.best_dec + '<BR>Error: +/-' + d.best_r95 + '<BR>Source: ' + document.getElementById('table_source').innerHTML + '<BR>' + simbadLink + ' | ' + nedLink; 
+
 
 					// Select the tooltip area to the webpage
 					var tooltip_map = d3.select(".tooltip_map")
@@ -2679,30 +2678,6 @@
 				</div>
 			</div>
 			<!-- Position information ends here -->		
-
-			<!-- FAVA Resources start here -->		
-			<div class="panel panel-default" style="height: 152px;">
-				<div class="panel-heading">
-			        <h3 class="panel-title">Catalog Resources</h3>
-			     </div>
-
-					<center>
-
-			            <table class="table table-striped">
-			            <!-- <table class="table"> -->
-			              <tbody>					
-  								<tr><td><a href="index.php">SIMBAD Astronomical Database</a></td><td td id="table_flarelist"></td></tr>			
-  								<tr><td><a href="LightCurve.php"> NASA Extragalactic Database (NED)</a></td><td td id="table_lightcurve"></td></tr>
-  								<tr><td><a href="https://heasarc.gsfc.nasa.gov/cgi-bin/W3Browse/w3browse.pl">HEASARC Database</a></td><td td id="table_flarelist"></td></tr>			
-
-  								
-			              </tbody>
-			            </table>  
-
-				    </center>
-
-		    </div>
-			<!-- FAVA Resources ends here -->	
 
 
 			<!-- FAVA Resources start here -->		
