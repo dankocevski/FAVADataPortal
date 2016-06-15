@@ -2238,7 +2238,7 @@
 					var lightcurveLink_3FGL = "<a href=\"http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_lc_v5/" + d.Source_Name.replace(' ', '_').replace('+','p').replace('.','d').replace('-','m') + "_lc.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">3FGL Light Curve</a>";
 					var lightcurveLink_FAVA = "<a href=\"LightCurve.php?ra=" + d.RAJ2000 + "&dec=" + d.DEJ2000 + "\">FAVA Light Curve</a>";
 					var spectrum = "<a href=\"http://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/3FGL-table/data/3FGL_spec_v5/"  + d.Source_Name.replace(' ', '_').replace('.','d').replace('+','p').replace('-','m') + "_spec.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">3FGL Spectrum</a>";
-					var innerHTML =  d.Source_Name + '<BR>RA: ' + d.RAJ2000 + ', Dec: ' + d.DEJ2000 + '<BR>Association: <a href=\"http://www.google.com/search?q=\'"' + d.ASSOC1 + '\'\">' + d.ASSOC1 + '</a><BR>' + lightcurveLink_3FGL  + ' | ' + spectrum + "<BR>" + lightcurveLink_FAVA;
+					var innerHTML =  d.Source_Name + '<BR>RA: ' + d.RAJ2000 + ', Dec: ' + d.DEJ2000 + '<BR>Association: <a href=\"http://www.google.com/search?q=\'' + d.ASSOC1 + '\'\">' + d.ASSOC1 + '</a><BR>' + lightcurveLink_3FGL  + ' | ' + spectrum + "<BR>" + lightcurveLink_FAVA;
 					// var innerHTML =  d.Source_Name + '<BR>RA: ' + d.RAJ2000 + ', Dec: ' + d.DEJ2000 + '<BR>Association: ' + d.ASSOC1 + '<BR>Class: ' + d.Type;
 
 				    var offsetTop = $("#FlareMap").offset().top;
