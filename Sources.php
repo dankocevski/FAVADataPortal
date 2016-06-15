@@ -713,9 +713,9 @@
 
 					row[++j] ='<td style="text-align: center;">';
 
-					if (key === 'num') {
+					if (key === 'cast(num as int)') {
 
-						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
+						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['cast(num as int)'] + '"">' + sourceRecord['cast(num as int)'] + '</a>';
 
 					} else if (key === 'bestPositionSource') {
 
@@ -765,7 +765,7 @@
 						document.getElementById('table_datestop').innerHTML = sourceRecord[key]
 						row[++j] = sourceRecord[key];
 
-					} else if (key === 'num') {
+					} else if (key === 'cast(num as int)') {
 
 						document.getElementById('table_sources').innerHTML = sourceRecord[key]
 						row[++j] = sourceRecord[key];
@@ -816,7 +816,7 @@
 			    	radius = sigma * 1.5;
 			    }
 
-			    point = {Source_Name: sourceRecord['num'], ASSOC1: sourceRecord['fglassoc'], RAJ2000: sourceRecord['fava_ra'], DEJ2000: sourceRecord['fava_dec'], GLON: sourceRecord['gall'], GLAT: sourceRecord['galb'], Size: radius }
+			    point = {Source_Name: sourceRecord['cast(num as int)'], ASSOC1: sourceRecord['fglassoc'], RAJ2000: sourceRecord['fava_ra'], DEJ2000: sourceRecord['fava_dec'], GLON: sourceRecord['gall'], GLAT: sourceRecord['galb'], Size: radius }
 
 			    // Add the point to the points array
 			    points.push(point);
