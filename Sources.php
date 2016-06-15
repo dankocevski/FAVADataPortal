@@ -547,8 +547,7 @@
 				populateMap(data);
 
 
-			}});
-			
+			}});			
 		}
 
        function toggleColumn(checkbox) {
@@ -897,6 +896,7 @@
 			toDegrees = 180.0/pi;
 			degrees2arcseconds = 3600.;
 			hours2degrees = 360/24.
+			radians2degrees = 360./(2*pi)
 
 			// From J2000 to "galactic coordinates"
 			// Spherical Astronomy by Green, equation 14.55, page 355
@@ -911,7 +911,7 @@
 			var dec;
 
 			// Converting the user supplied ra and dec from degrees to arcseconds
-			globalJRA = parseFloat(ra) * hours2degrees * degrees2arcseconds;
+			globalJRA = parseFloat(ra) * degrees2arcseconds;
 			globalJDec = parseFloat(dec) * degrees2arcseconds;
 
 
@@ -953,6 +953,9 @@
 			if ( result[0] < 0.0 ) {
 				result[0] = result[0] + pi + pi;
 			}
+
+			result[0] = result[0] * radians2degrees
+			result[1] = result[1] * radians2degrees
 
 			return result
 		}
