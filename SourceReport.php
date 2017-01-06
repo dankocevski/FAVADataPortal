@@ -14,7 +14,8 @@
     <!-- D3 Plotting Library -->
     <!-- // <script type="text/javascript" src="/js/lib/dummy.js"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="/css/result-light.css"> -->
-    <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+    <!-- <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script> -->
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="http://d3js.org/d3.geo.projection.v0.js"></script>
     <script type="text/javascript" src="http://d3js.org/topojson.v1.js"></script>
 
@@ -375,8 +376,8 @@
 				var gall = data_flare[0]['gall'];
 				var galb = data_flare[0]['galb'];
 
-				var URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
-				var URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+				var URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+				var URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
 
 				$("#lowEnergyTSMap").attr("src",URL_low);
 				$("#highEnergyTSMap").attr("src",URL_high);
@@ -2695,7 +2696,7 @@
   								<tr><td><a href="LightCurve.php">FAVA Light Curve Generator</a></td><td td id="table_lightcurve"></td></tr>
 								<tr><td><a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">1st FAVA Catalog</a></td><td id="table1_1FAV"></td></tr>
 								<!-- <tr><td><a href="CatalogView_2FAV.php">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr> -->
-								<tr><td><a href="#">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
+								<tr><td><a href="http://fermi.gsfc.nasa.gov/ssc/data/access/lat/fava_catalog/">2nd FAVA Catalog</a></td><td td id="table1_2FAV"></td></tr>
 								<tr><td><a href="About.html">About FAVA</a></td><td></td></tr>		
 			              </tbody>
 			            </table>  
