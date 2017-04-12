@@ -37,7 +37,8 @@
     }
 
     // Initiate the database connection
-    $db = new SQLite3 ('./db/fava_flares.db');
+    // $db = new SQLite3 ('./db/fava_flares.db');
+    $db = new SQLite3 ('./db/fava_lightcurve.db');
 
     // Return the 2FAV catalog (2933 flares)
     if ($typeOfRequest === '2FAV') { 
