@@ -25,7 +25,8 @@
 
     // Initiate the database connection
     // $db = new SQLite3 ('./db/geohash.db');
-    $db = new SQLite3 ('./db/fava.db');
+    // $db = new SQLite3 ('./db/fava.db');
+    $db = new SQLite3 ('./db/fava_lightcurve.db');
 
     $queryStatement = 'SELECT ra, dec FROM geohash' ;
     // $queryStatement = 'SELECT radec FROM geohash' ;
