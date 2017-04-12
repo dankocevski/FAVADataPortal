@@ -17,8 +17,8 @@
         $angle_degrees = $angle * (180/pi());
 
         return $angle_degrees;
-    }
 
+    }
 
     if (isset($_GET['typeOfRequest']) == false) {
         echo '<BR><B>Usage Examples:</B><BR>';
@@ -33,8 +33,8 @@
 
         // Determine the type of data requested
         $typeOfRequest = $_GET['typeOfRequest']; 
-    }
 
+    }
 
     // Initiate the database connection
     $db = new SQLite3 ('./db/fava_flares.db');
@@ -70,9 +70,7 @@
         // Encode the PHP associative array into a JSON associative array
         echo json_encode($data);
 
-
     }
-
 
     // Return timebin data
     if ($typeOfRequest === 'TimebinData') { 
@@ -115,7 +113,6 @@
             // Construct the query statement 
             if ($threshold === '6Sigma') {
 
- 
                 $cut1 = '(week == ' . $week . ' and (cast(he_sigma as float)>6) and (cast(sundist as float)>10))';
                 $cut2 = '(week == ' . $week . '  and (cast(sigma as float)>6) and (cast(sundist as float)>10))';
                 $cut3 = '(week == ' . $week . '  and ((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
@@ -196,7 +193,6 @@
 
     }
 
-
     // Return basic information on all sources to be displayed in the map
     if ($typeOfRequest === 'MapData') { 
 
@@ -272,6 +268,7 @@
             echo json_encode($data);
 
         } 
+
     }
 
     if ($typeOfRequest === 'FlareList') { 
@@ -310,9 +307,7 @@
             // Encode the PHP associative array into a JSON associative array
             echo json_encode($data);
 
-
     }
-
 
 ?>  
 
