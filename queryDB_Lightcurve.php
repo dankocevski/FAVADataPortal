@@ -1,39 +1,39 @@
 <?php
 
-    phpinfo();
-    // function distance($latA, $lonA, $latB, $lonB) {
-    //         // convert from degrees to radians
-    //         $latA = deg2rad($latA); $lonA = deg2rad($lonA);
-    //         $latB = deg2rad($latB); $lonB = deg2rad($lonB);
+    // phpinfo();
+    function distance($latA, $lonA, $latB, $lonB) {
+            // convert from degrees to radians
+            $latA = deg2rad($latA); $lonA = deg2rad($lonA);
+            $latB = deg2rad($latB); $lonB = deg2rad($lonB);
 
-    //         // calculate absolute difference for latitude and longitude
-    //         $dLat = ($latA - $latB);
-    //         $dLon = ($lonA - $lonB);
+            // calculate absolute difference for latitude and longitude
+            $dLat = ($latA - $latB);
+            $dLon = ($lonA - $lonB);
 
-    //         // do trigonometry magic
-    //         $d =
-    //                 sin($dLat/2) * sin($dLat/2) +
-    //                 cos($latA) * cos($latB) * sin($dLon/2) *sin($dLon/2);
-    //         $d = 2 * asin(sqrt($d));
-    //         return $d * 6371;
-    // }
+            // do trigonometry magic
+            $d =
+                    sin($dLat/2) * sin($dLat/2) +
+                    cos($latA) * cos($latB) * sin($dLon/2) *sin($dLon/2);
+            $d = 2 * asin(sqrt($d));
+            return $d * 6371;
+    }
 
 
-    // // Get the url parameters
-    // $raUser = $_GET['ra'];
-    // $decUser = $_GET['dec'];
+    // Get the url parameters
+    $raUser = $_GET['ra'];
+    $decUser = $_GET['dec'];
 
-    // // Initiate the database connection
-    // // $db = new SQLite3 ('./db/geohash.db');
-    // // $db = new SQLite3 ('./db/fava.db');
-    // $db = new SQLite3 ('./db/fava_lightcurve.db');
+    // Initiate the database connection
+    // $db = new SQLite3 ('./db/geohash.db');
+    // $db = new SQLite3 ('./db/fava.db');
+    $db = new SQLite3 ('./db/fava_lightcurve.db');
 
-    // $queryStatement = 'SELECT ra, dec FROM geohash' ;
-    // // $queryStatement = 'SELECT radec FROM geohash' ;
+    $queryStatement = 'SELECT ra, dec FROM geohash' ;
+    // $queryStatement = 'SELECT radec FROM geohash' ;
 
-    // // echo "Query Statement:<BR>";
-    // // echo $queryStatement;
-    // // echo "<BR>";
+    echo "Query Statement:<BR>";
+    echo $queryStatement;
+    echo "<BR>";
 
     // // // Query the database
     // $results = $db->query($queryStatement);
