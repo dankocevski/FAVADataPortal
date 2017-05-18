@@ -36,7 +36,11 @@
     echo "<BR>";
 
     // // // Query the database
-    // $results = $db->query($queryStatement);
+    $results = $db->query($queryStatement);
+
+    echo "Results:<BR>";
+    echo $results;
+    echo "<BR>";
 
     // // // Create an array to store the results
     // // // $ra = array();
