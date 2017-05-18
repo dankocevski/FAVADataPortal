@@ -48,30 +48,48 @@
     echo $results;
     echo "<BR>";
 
+
+    $queryStatement = 'SELECT ra, dec FROM geohash' ;
+
+    // Query the database
+    $results = $db->query($queryStatement);
+
+    // Create an array to store the results
+    $data = array();
+
+    // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $data[] = $row;
+    }  
+
+    // Encode the PHP associative array into a JSON associative array
+    echo json_encode($data);
+
+
     // // // Create an array to store the results
     // // // $ra = array();
     // // // $dec = array();
 
-    $distance = array();
+    // $distance = array();
 
-    // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+    // // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+    // while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
 
-        $data[] = $row;
+    //     $data[] = $row;
         
-        $ra = $row['ra'];
-        $dec = $row['dec'];
-        $radec = $row['ra'] . 'x' . $row['dec'];
+    //     $ra = $row['ra'];
+    //     $dec = $row['dec'];
+    //     $radec = $row['ra'] . 'x' . $row['dec'];
 
-        // $radec = $row;
-        // $substrings = explode('x',$radec);
-        // $ra = $substrings[0];
-        // $dec = $substrings[1];
+    //     // $radec = $row;
+    //     // $substrings = explode('x',$radec);
+    //     // $ra = $substrings[0];
+    //     // $dec = $substrings[1];
 
-        $distance[$radec] = distance($dec, $ra, floatval($decUser), floatval($raUser));
+    //     $distance[$radec] = distance($dec, $ra, floatval($decUser), floatval($raUser));
 
-        // echo "$ra x $dec - $distance <BR>";
-    }  
+    //     // echo "$ra x $dec - $distance <BR>";
+    // }  
 
     // $radec_closest = min(array_keys($distance, min($distance)));
 
@@ -103,7 +121,7 @@
     // }  
 
     // Encode the PHP associative array into a JSON associative array
-    echo json_encode($data);
+    // echo json_encode($data);
 
 
 ?>  
