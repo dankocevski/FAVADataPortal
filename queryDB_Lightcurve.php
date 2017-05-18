@@ -31,6 +31,10 @@
     $queryStatement = 'SELECT ra, dec FROM geohash' ;
     // $queryStatement = 'SELECT radec FROM geohash' ;
 
+    echo "Database connection:<BR>";
+    echo $db;
+    echo "<BR>";
+
     echo "Query Statement:<BR>";
     echo $queryStatement;
     echo "<BR>";
