@@ -1,69 +1,97 @@
 <?php
 
-    // phpinfo();
-    function distance($latA, $lonA, $latB, $lonB) {
-            // convert from degrees to radians
-            $latA = deg2rad($latA); $lonA = deg2rad($lonA);
-            $latB = deg2rad($latB); $lonB = deg2rad($lonB);
 
-            // calculate absolute difference for latitude and longitude
-            $dLat = ($latA - $latB);
-            $dLon = ($lonA - $lonB);
+        // Initiate the database connection
+        $db = new SQLite3 ('./db/fava_flares.db');
 
-            // do trigonometry magic
-            $d =
-                    sin($dLat/2) * sin($dLat/2) +
-                    cos($latA) * cos($latB) * sin($dLon/2) *sin($dLon/2);
-            $d = 2 * asin(sqrt($d));
-            return $d * 6371;
-    }
+        // Construct the query statement 
+        $queryStatement = 'select distinct week, tmin, tmax, dateStart, dateStop from flares order by cast(week as int) DESC;' ;
 
+        // echo "Query Statement:<BR>";
+        // echo $queryStatement;
+        // echo "<BR>";
 
-    // Get the url parameters
-    $raUser = $_GET['ra'];
-    $decUser = $_GET['dec'];
+        // Query the database
+        $results = $db->query($queryStatement);
 
-    // Initiate the database connection
-    // $db = new SQLite3 ('./db/geohash.db');
-    // $db = new SQLite3 ('./db/fava.db');
-    $db = new SQLite3 ('./db/fava_lightcurve.db');
+        // Create an array to store the results
+        $data = array();
 
-    $queryStatement = 'SELECT ra, dec FROM geohash' ;
-    // $queryStatement = 'SELECT radec FROM geohash' ;
+        // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+        while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+            $data[] = $row;
+        }  
 
-   if(!$db){
-      echo $db->lastErrorMsg();
-   } else {
-      echo "Opened database successfully\n";
-   }
-
-    echo "Query Statement:<BR>";
-    echo $queryStatement;
-    echo "<BR>";
-
-    // // // Query the database
-    $results = $db->query($queryStatement);
-
-    echo "Results:<BR>";
-    echo $results;
-    echo "<BR>";
+        // Encode the PHP associative array into a JSON associative array
+        echo json_encode($data);
 
 
-    $queryStatement = 'SELECT ra, dec FROM geohash' ;
 
-    // Query the database
-    $results = $db->query($queryStatement);
 
-    // Create an array to store the results
-    $data = array();
+   //  // phpinfo();
+   //  function distance($latA, $lonA, $latB, $lonB) {
+   //          // convert from degrees to radians
+   //          $latA = deg2rad($latA); $lonA = deg2rad($lonA);
+   //          $latB = deg2rad($latB); $lonB = deg2rad($lonB);
 
-    // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
-        $data[] = $row;
-    }  
+   //          // calculate absolute difference for latitude and longitude
+   //          $dLat = ($latA - $latB);
+   //          $dLon = ($lonA - $lonB);
 
-    // Encode the PHP associative array into a JSON associative array
-    echo json_encode($data);
+   //          // do trigonometry magic
+   //          $d =
+   //                  sin($dLat/2) * sin($dLat/2) +
+   //                  cos($latA) * cos($latB) * sin($dLon/2) *sin($dLon/2);
+   //          $d = 2 * asin(sqrt($d));
+   //          return $d * 6371;
+   //  }
+
+
+   //  // Get the url parameters
+   //  $raUser = $_GET['ra'];
+   //  $decUser = $_GET['dec'];
+
+   //  // Initiate the database connection
+   //  // $db = new SQLite3 ('./db/geohash.db');
+   //  // $db = new SQLite3 ('./db/fava.db');
+   //  $db = new SQLite3 ('./db/fava_lightcurve.db');
+
+   //  $queryStatement = 'SELECT ra, dec FROM geohash' ;
+   //  // $queryStatement = 'SELECT radec FROM geohash' ;
+
+   // if(!$db){
+   //    echo $db->lastErrorMsg();
+   // } else {
+   //    echo "Opened database successfully\n";
+   // }
+
+   //  echo "Query Statement:<BR>";
+   //  echo $queryStatement;
+   //  echo "<BR>";
+
+   //  // // // Query the database
+   //  $results = $db->query($queryStatement);
+
+   //  echo "Results:<BR>";
+   //  echo $results;
+   //  echo "<BR>";
+
+
+// $queryStatement = 'SELECT ra, dec FROM geohash' ;
+
+// // Query the database
+// $results = $db->query($queryStatement);
+
+// // Create an array to store the results
+// $data = array();
+
+// // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+// while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+//     $data[] = $row;
+// }  
+
+// // Encode the PHP associative array into a JSON associative array
+// echo json_encode($data);
 
 
     // // // Create an array to store the results
