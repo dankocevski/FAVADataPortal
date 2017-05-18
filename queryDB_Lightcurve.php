@@ -5,8 +5,9 @@
         $db = new SQLite3 ('./db/fava_flares.db');
 
         // Construct the query statement 
-        $queryStatement = 'select distinct week, tmin, tmax, dateStart, dateStop from flares order by cast(week as int) DESC;' ;
-
+        // $queryStatement = 'select distinct week, tmin, tmax, dateStart, dateStop from flares order by cast(week as int) DESC;' ;
+        $queryStatement = 'select count(*) from geohash;'
+         
         // echo "Query Statement:<BR>";
         // echo $queryStatement;
         // echo "<BR>";
