@@ -1,5 +1,9 @@
 <?php
 
+    // Increase the timeout and memory limits
+    ini_set('max_execution_time', 60);
+    ini_set('memory_limit','256M');
+
     function distance($latA, $lonA, $latB, $lonB) {
             // convert from degrees to radians
             $latA = deg2rad($latA); $lonA = deg2rad($lonA);

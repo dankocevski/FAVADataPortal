@@ -1,7 +1,9 @@
 <?php
 
+    ini_set('max_execution_time', 120);
+    ini_set('memory_limit','256M');
 
-     function distance($latA, $lonA, $latB, $lonB) {
+    function distance($latA, $lonA, $latB, $lonB) {
 
             // convert from degrees to radians
             $latA = deg2rad($latA); $lonA = deg2rad($lonA);
@@ -19,19 +21,15 @@
 
     }
 
-
     // Get the url parameters
     $raUser = $_GET['ra'];
     $decUser = $_GET['dec'];
 
     // Initiate the database connection
-    // $db = new SQLite3 ('./db/fava_flares.db');
     $db = new SQLite3 ('./db/fava_lightcurve.db');
 
     // Construct the query statement 
-    // $queryStatement = 'select distinct week, tmin, tmax, dateStart, dateStop from flares order by cast(week as int) DESC;' ;
-     // $queryStatement = 'select ra, dec from geohash limit 10;';
-     $queryStatement = 'SELECT ra, dec FROM geohash limit 10;' ;
+    $queryStatement = 'SELECT ra, dec FROM geohash;' ;
 
     // echo "Query Statement:<BR>";
     // echo $queryStatement;
@@ -40,16 +38,16 @@
     // Query the database
     $results = $db->query($queryStatement);
 
-    // Create an array to store the results
-    $data = array();
+    // // Create an array to store the results
+    // $data = array();
 
-    // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
-        $data[] = $row;
-    }  
+    // // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+    // while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+    //     $data[] = $row;
+    // }  
 
     // Encode the PHP associative array into a JSON associative array
-    echo json_encode($data);
+    // echo json_encode($data);
 
 
     $distance = array();
@@ -98,6 +96,6 @@
     echo json_encode($data);
 
 
-        
+
 
 ?>
