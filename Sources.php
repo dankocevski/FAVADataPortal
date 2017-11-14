@@ -1237,7 +1237,7 @@
 			<!-- Citation request start here -->	
 			<div>	
 				<center>
-					<div class="alert alert-success" role="alert">Please reference <a href="http://adsabs.harvard.edu/abs/2013ApJ...771...57A">Ackermann et al. 2013</a> for any use of the presented results</div>
+					<div class="alert alert-success" role="alert">Please reference <a href="http://adsabs.harvard.edu/abs/2017ApJ...846...34A">Abdollahi et al. 2017</a> for any use of the presented results</div>
 			    </center>
 		    </div>
 			<!--  Citation request ends here -->	
