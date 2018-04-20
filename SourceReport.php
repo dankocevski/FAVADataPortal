@@ -848,7 +848,9 @@
 							}
 						},
 
-						tickInterval: 50,
+						min: 239859818,
+						floor: 239859818,
+						tickInterval: 30240000,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
