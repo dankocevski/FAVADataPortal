@@ -669,7 +669,7 @@
 						name: 'Error',
 						type: 'errorbar',
 						color: '#000000',
-						data: e_relflux,
+						data: e_relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -683,7 +683,7 @@
 				});
 
 
-				// RelativeFluxGT800MeV_Significance	
+				// RelativeFluxGT100MeV_Significance	
 				var chart;
 				$('#RelativeFluxGT100MeV_Significance').highcharts({
 					chart: {
@@ -810,7 +810,7 @@
 					}]
 				});
 
-				// RelativeFluxGT100MeV
+				// RelativeFluxGT800MeV
 				var chart;
 				$('#RelativeFluxGT800MeV').highcharts({
 					chart: {
@@ -938,7 +938,7 @@
 						name: 'Error',
 						type: 'errorbar',
 						color: '#000000',
-						data: e_he_relflux,
+						data: e_he_relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -951,7 +951,7 @@
 					}]
 				});
 
-				// RelativeFluxGT100MeV_Significance	
+				// RelativeFluxGT800MeV_Significance	
 				var chart;
 				$('#RelativeFluxGT800MeV_Significance').highcharts({
 					chart: {

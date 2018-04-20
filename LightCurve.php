@@ -618,7 +618,7 @@
 					}]
 				});
 
-				// RelativeFluxGT100MeV
+				// RelativeFluxGT800MeV
 				var chart;
 				$('#RelativeFluxGT800MeV').highcharts({
 					chart: {
