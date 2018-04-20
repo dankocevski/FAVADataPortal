@@ -518,7 +518,6 @@
 		    return points_CanvasProjection, userPoint_CanvasProjection;
 		};
 
-
 		// Call the database
 		function queryDB_2FAV() {
 
@@ -588,7 +587,6 @@
             }
         }
 
-
         function toggleColumns() {
 
             // check the states of the table configuration checkboxes
@@ -627,7 +625,6 @@
                 }
             }
         }
-
 
 		function fillTable(data) {
 
@@ -789,7 +786,6 @@
 			$('#dataTable').html(row.join('')); 
 
 			toggleColumns()
-
 		}
 
 		function populateMap(data) {
@@ -963,7 +959,6 @@
 			return result
 		}
 
-
 		$(function() {
 
 			// Use php to read the url parameter and set it in the analysis run info box
@@ -1064,7 +1059,6 @@
 			$('#map-parent').mouseout(function() {
 				$('#map-tip').hide();
 			})
-
 
 		});
 
