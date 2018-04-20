@@ -545,7 +545,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
+						    value: parseFloat(document.getElementById('StartTime').innerHTML) + ((parseFloat(document.getElementById('EndTime').innerHTML)-parseFloat(document.getElementById('StartTime').innerHTML))/2), // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -702,7 +702,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
+						    value: parseFloat(document.getElementById('StartTime').innerHTML) + ((parseFloat(document.getElementById('EndTime').innerHTML)-parseFloat(document.getElementById('StartTime').innerHTML))/2), // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
@@ -970,7 +970,7 @@
 						plotLines: [{
 						    color: 'red', // Color value
 						    dashStyle: 'Dash', // Style of the plot line. Default to solid
-						    value: parseFloat(document.getElementById('table_week').innerHTML)-1, // Value of where the line will appear
+						    value: parseFloat(document.getElementById('StartTime').innerHTML) + ((parseFloat(document.getElementById('EndTime').innerHTML)-parseFloat(document.getElementById('StartTime').innerHTML))/2), // Value of where the line will appear
 						    width: 1, // Width of the line 
 						    zIndex:0   
 						}],
