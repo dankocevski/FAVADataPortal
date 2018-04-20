@@ -275,6 +275,14 @@
 	        var he_relflux_low = [];
 	        var he_relflux_high = [];
 
+	        var relflux_withMET = [];
+	        var e_relflux_withMET = [];
+	        var he_relflux_withMET = [];
+	        var e_he_relflux_withMET = [];
+
+	        var sigma_withMET = [];
+	        var he_sigma_withMET = [];
+
 		    // Setup the URL
 		    var ra = document.getElementById('raInput').value;
    		    var dec = document.getElementById('decInput').value;
@@ -289,7 +297,7 @@
 
 				$.each(data_lightCurve, function(i, datum) {
 
-       				time.push(datum.time);
+       				time.push(parseInt(datum.time));
        				nev.push(datum.nev);
        				avnev.push(datum.avnev);
        				relflux.push( (datum.nev-datum.avnev)/datum.avnev )
@@ -299,7 +307,6 @@
 					relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
 					e_relflux.push( [relflux_low,relflux_high] )
 
-
        				he_nev.push(datum.he_nev);
        				he_avnev.push(datum.he_avnev);
        				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)
@@ -308,6 +315,15 @@
 					he_relflux_low = (datum.he_nev-datum.he_avnev)/datum.he_avnev - (Math.sqrt(datum.he_nev)/datum.he_avnev)
 					he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
 					e_he_relflux.push( [he_relflux_low,he_relflux_high] )
+
+					relflux_withMET.push( [datum.time, (datum.nev-datum.avnev)/datum.avnev] )
+					e_relflux_withMET.push( [datum.time, relflux_low, relflux_high ])
+
+					he_relflux_withMET.push( [datum.time, (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
+					e_he_relflux_withMET.push( [datum.time, he_relflux_low, he_relflux_high ])
+
+					sigma_withMET.push( [datum.time, parseFloat(datum.sigma)])
+					he_sigma_withMET.push( [datum.time, parseFloat(datum.he_sigma)] )
 
     			});
 				
@@ -364,7 +380,10 @@
 							}
 						},
 
-						tickInterval: 50,
+						min: 239859818,
+						floor: 239859818,
+						tickInterval: 30240000,
+						// tickPixelInterval: 100,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
@@ -383,13 +402,15 @@
 							}
 						}
 					}],
-					yAxis: [{ // Primary yAxis
-						    plotLines:[{
-								value:0,
-								color: '#000000',
-								width:1,
-								zIndex:0,
-						    }],
+
+					// Primary yAxis
+					yAxis: [{ 
+					    plotLines:[{
+							value:0,
+							color: '#000000',
+							width:1,
+							zIndex:0,
+					    }],
 
 						labels: {
 
@@ -403,9 +424,6 @@
 							}
 						},
 			
-
-
-
 						// tickColor: '#000000',
 						// tickPosition: 'inside',
 						// tickWidth: lineWidth,
@@ -427,7 +445,6 @@
 
 						lineColor: '#000000',
 						gridLineWidth: 0.5,
-
 
 						lineColor: '#000000',
 						lineWidth: lineWidth,
@@ -451,7 +468,8 @@
 						name: 'Relative Flux > 100 MeV',
 						color: '#000000',
 						type: 'scatter',
-						data: relflux,
+						//data: relflux,
+						data: relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -465,7 +483,7 @@
 						name: 'Error',
 						type: 'errorbar',
 						color: '#000000',
-						data: e_relflux,
+						data: e_relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -508,7 +526,9 @@
 							}
 						},
 
-						tickInterval: 50,
+						min: 239859818,
+						floor: 239859818,
+						tickInterval: 30240000,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
@@ -528,14 +548,15 @@
 							}
 						}
 					}],
-					yAxis: [{ // Primary yAxis
 
-							plotLines:[{
-								value:0,
-								color: '#000000',
-								width:1,
-								zIndex:0,
-						    }],
+					yAxis: [{ 
+
+						plotLines:[{
+							value:0,
+							color: '#000000',
+							width:1,
+							zIndex:0,
+						}],
 
 						labels: {
 							// formatter: function() {
@@ -547,7 +568,8 @@
 							}
 						},
 			
-						// tickInterval: 50,
+						// floor: 239859818,
+						// tickInterval: 30240000,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
@@ -584,7 +606,7 @@
 						name: 'Sigma',
 						color: '#000000',
 						type: 'scatter',
-						data: sigma,
+						data: sigma_withMET,
 						marker: {
 	                		radius: symbolRadius,
 	                		symbol: symbolShape
@@ -625,7 +647,9 @@
 							}
 						},
 
-						tickInterval: 50,
+						min: 239859818,
+						floor: 239859818,
+						tickInterval: 30240000,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
@@ -644,13 +668,14 @@
 							}
 						}
 					}],
-					yAxis: [{ // Primary yAxis
-						    plotLines:[{
-								value:0,
-								color: '#000000',
-								width:1,
-								zIndex:0,
-						    }],
+					yAxis: [{
+
+						plotLines:[{
+							value:0,
+							color: '#000000',
+							width:1,
+							zIndex:0,
+						}],
 
 						labels: {
 
@@ -699,7 +724,7 @@
 						name: 'Relative Flux > 800 MeV',
 						color: '#000000',
 						type: 'scatter',
-						data: he_relflux,
+						data: he_relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -713,7 +738,7 @@
 						name: 'Error',
 						type: 'errorbar',
 						color: '#000000',
-						data: e_he_relflux,
+						data: e_he_relflux_withMET,
 						marker: {
 		            		radius: symbolRadius,
 		            		symbol: symbolShape
@@ -755,7 +780,9 @@
 							}
 						},
 
-						tickInterval: 50,
+						min: 239859818,
+						floor: 239859818,
+						tickInterval: 30240000,
 						tickColor: '#000000',
 						tickPosition: 'inside',
 						tickWidth: lineWidth,
@@ -775,14 +802,15 @@
 							}
 						}
 					}],
-					yAxis: [{ // Primary yAxis
 
-							plotLines:[{
-								value:0,
-								color: '#000000',
-								width:1,
-								zIndex:0,
-						    }],
+					yAxis: [{
+
+						plotLines:[{
+							value:0,
+							color: '#000000',
+							width:1,
+							zIndex:0,
+						}],
 
 						labels: {
 							// formatter: function() {
@@ -831,7 +859,7 @@
 						name: 'Sigma',
 						color: '#000000',
 						type: 'scatter',
-						data: he_sigma,
+						data: he_sigma_withMET,
 						marker: {
 	                		radius: symbolRadius,
 	                		symbol: symbolShape
@@ -988,6 +1016,29 @@
 			document.getElementById('table_galb').innerHTML = RadiansPrintD(result[0]);
 			document.getElementById('table_gall').innerHTML = RadiansPrintD(result[1]);
 		}
+
+		function reloadURL() {
+
+			// // Update the light curve data
+			// updateLightCurveData()
+
+		 //    // Update the data
+		 //    queryDB_2FAV(raCenter, decCenter, searchRadius)
+		 //    queryDB_3FGL(raCenter, decCenter, searchRadius)
+
+		 baseURL = window.location.href.replace(window.location.search,'')
+
+	    // Setup the URL
+	    var ra = document.getElementById('raInput').value;
+		var dec = document.getElementById('decInput').value;
+	    var ra_urlEncoded = encodeURIComponent(ra);
+	    var dec_urlEncoded = encodeURIComponent(dec);
+
+        var newURL = baseURL + "?ra=" + ra_urlEncoded + "&dec=" + dec_urlEncoded;
+		window.location.href = newURL;
+
+		}
+
 
 		function update() {
 
@@ -2365,7 +2416,7 @@
 
 					<center>
 						<div style="width: 150px; margin-left:125px;" id="submitButtonDiv">
-					    	<button form="submitForm" type="button" onclick="update()" name="submitButton" id="submitButton" subvalue="True" class="btn btn-primary">Submit</button>
+					    	<button form="submitForm" type="button" onclick="reloadURL()" name="submitButton" id="submitButton" subvalue="True" class="btn btn-primary">Submit</button>
 					    </div>
 					    <div id="ajaxSpinner" style="width: 150px; margin-left:125px; display:none">	
 					   		

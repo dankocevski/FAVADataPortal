@@ -183,7 +183,10 @@
 		    canvas.setAttribute("margin", "auto");
 		    $('#map-parent').append(canvas);
 		    var ctx = canvas.getContext("2d");
-		    return ctx;
+			// var img=new Image();
+			// img.src="https://fermi.gsfc.nasa.gov/ssc/data/access/lat/FAVA/img/FAVAFlareSummary_NoFlares.png";
+			// ctx.drawImage(img,10,0,980,500);
+   		    return ctx;
 		};
 
 		function showMap(p, paths, points, mouseCoords, userData) {
