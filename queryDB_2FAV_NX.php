@@ -17,8 +17,8 @@
         $angle_degrees = $angle * (180/pi());
 
         return $angle_degrees;
-    }
 
+    }
 
     if (isset($_GET['typeOfRequest']) == false) {
         echo '<BR><B>Usage Examples:</B><BR>';
@@ -33,12 +33,29 @@
 
         // Determine the type of data requested
         $typeOfRequest = $_GET['typeOfRequest']; 
+
     }
 
+    $servername = "asddb.gsfc.nasa.gov";
+    $username = "dkocevsk";
+    $password = "p'dkSQLworks4me";
 
     // Initiate the database connection
-    // $db = new SQLite3 ('./db/fava_flares.db');
-    $db = new SQLite3 ('./db/fava_lightcurve.db');
+    $conn = new mysqli($servername, $username, $password);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+    echo "Connected successfully";
+
+    echo "type of request";
+    echo $typeOfRequest;
+
+
+
+
+
 
     // Return the 2FAV catalog (2933 flares)
     if ($typeOfRequest === '2FAV') { 
@@ -46,24 +63,15 @@
         $and = ' and ';
         $or = ' or ';
 
-        // $cut1 = '((cast(week as float) < 340) and (cast(he_sigma as float)>6) and (cast(sundist as float)>10))';
-        // $cut2 = '((cast(week as float) < 340) and (cast(sigma as float)>6) and (cast(sundist as float)>10))';
-        // $cut3 = '((cast(week as float) < 340) and ((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
+        $cut1 = '((cast(week as float) < 340) and (cast(he_sigma as float)>6) and (cast(sundist as float)>10))';
+        $cut2 = '((cast(week as float) < 340) and (cast(sigma as float)>6) and (cast(sundist as float)>10))';
+        $cut3 = '((cast(week as float) < 340) and ((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
 
-        // $cut4 = '((cast(week as float) < 340) and ((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
-        // $cut5 = '((cast(week as float) < 340) and ((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
-        // $cut6 = '((cast(week as float) < 340) and ((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
+        $cut4 = '((cast(week as float) < 340) and ((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
+        $cut5 = '((cast(week as float) < 340) and ((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
+        $cut6 = '((cast(week as float) < 340) and ((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
 
-        // $queryStatement = 'SELECT flareID, cast(num as int), best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6 . ' ORDER BY cast(best_ra as float) ASC';
-
-
-        $fava_cut_positive = '( (cast(week as float) < 340) and (cast(sundist as float)>6.0) and (((cast(sigma as float)>6.0) and ((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) ) or ((cast(he_sigma as float)>6.0)  and ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01)) ) or ((cast(sigma as float)>4.0) and (cast(he_sigma as float)>4.0) and (((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) or ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01))) ) ))';
-
-
-        $ts_cut_all = '( (cast(week as float) < 340) and ((cast(he_ts as float)>39.0) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))) or ((cast(le_ts as float)>39.0) and (cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))) or ((cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(le_ts as float)>18.0) and (cast(he_ts as float)>18.0) and (cast(he_le_dist as float)<1.5)))';
-
-
-        $queryStatement = 'SELECT flareID, cast(num as int), best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $fava_cut_positive . $or . $ts_cut_all . ' ORDER BY cast(best_ra as float) ASC';
+        $queryStatement = 'SELECT flareID, cast(num as int), best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6 . ' ORDER BY cast(best_ra as float) ASC';
 
 
         // Query the database
@@ -79,7 +87,6 @@
 
         // Encode the PHP associative array into a JSON associative array
         echo json_encode($data);
-
     }
 
     // Return timebin data
@@ -105,7 +112,6 @@
 
         // Encode the PHP associative array into a JSON associative array
         echo json_encode($data);
-
     }
 
     // Return timebin data
@@ -123,14 +129,15 @@
             // Construct the query statement 
             if ($threshold === '6Sigma') {
 
-                $fava_cut_positive = '((cast(sundist as float)>6.0) and (((cast(sigma as float)>6.0) and ((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) ) or ((cast(he_sigma as float)>6.0)  and ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01)) ) or ((cast(sigma as float)>4.0) and (cast(he_sigma as float)>4.0) and (((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) or ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01))) ) ))';
+                $cut1 = '(week == ' . $week . ' and (cast(he_sigma as float)>6) and (cast(sundist as float)>10))';
+                $cut2 = '(week == ' . $week . '  and (cast(sigma as float)>6) and (cast(sundist as float)>10))';
+                $cut3 = '(week == ' . $week . '  and ((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
 
+                $cut4 = '(week == ' . $week . '  and ((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
+                $cut5 = '(week == ' . $week . '  and ((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
+                $cut6 = '(week == ' . $week . '  and ((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
 
-                $ts_cut_all = '(((cast(he_ts as float)>39.0) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))) or ((cast(le_ts as float)>39.0) and (cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))) or ((cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(le_ts as float)>18.0) and (cast(he_ts as float)>18.0) and (cast(he_le_dist as float)<1.5)))';
-
-
-                $queryStatement = 'SELECT flareID, cast(num as int), best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE week == ' . $week . $and . '(' . $fava_cut_positive . $or . $ts_cut_all . ')' . 'ORDER BY cast(num as float) ASC';
-
+                $queryStatement = 'SELECT flareID, cast(num as int), best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6 . ' ORDER BY cast(num as float) ASC';
 
                 // echo "Query Statement:<BR>";
                 // echo $queryStatement;
@@ -161,7 +168,6 @@
             echo json_encode($data);
 
         }
-
     }
 
     // Return timebin data
@@ -199,7 +205,6 @@
             echo json_encode($data);
 
         }
-
     }
 
     // Return basic information on all sources to be displayed in the map
@@ -220,22 +225,15 @@
             // Construct the query statement 
             if ($threshold === '6Sigma') {
 
-                // $cut1 = '((cast(he_sigma as float)>6) and (cast(sundist as float)>10) )';
-                // $cut2 = '((cast(sigma as float)>6) and (cast(sundist as float)>10) )';
-                // $cut3 = '(((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
+                $cut1 = '((cast(he_sigma as float)>6) and (cast(sundist as float)>10) )';
+                $cut2 = '((cast(sigma as float)>6) and (cast(sundist as float)>10) )';
+                $cut3 = '(((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6)))';
 
-                // $cut4 = '(((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
-                // $cut5 = '(((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
-                // $cut6 = '(((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
+                $cut4 = '(((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)))';
+                $cut5 = '(((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)))';
+                $cut6 = '(((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39)))';
 
-                // $queryStatement = 'SELECT * from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6;
-
-                $fava_cut_positive = '((cast(sundist as float)>6.0) and (((cast(sigma as float)>6.0) and ((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) ) or ((cast(he_sigma as float)>6.0)  and ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01)) ) or ((cast(sigma as float)>4.0) and (cast(he_sigma as float)>4.0) and (((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) or ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01))) ) ))';
-
-                $ts_cut_all = '(((cast(he_ts as float)>39.0) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))) or ((cast(le_ts as float)>39.0) and (cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))) or ((cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(le_ts as float)>18.0) and (cast(he_ts as float)>18.0) and (cast(he_le_dist as float)<1.5)))';
-
-               // Construct the query statement 
-                $queryStatement = 'SELECT * from flares WHERE ' . $fava_cut_positive . $or . $ts_cut_all;
+                $queryStatement = 'SELECT * from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6;
 
                 // echo "Query Statement:<BR>";
                 // echo $queryStatement;
@@ -284,7 +282,6 @@
             echo json_encode($data);
 
         } 
-
     }
 
     if ($typeOfRequest === 'FlareList') { 
@@ -294,23 +291,16 @@
             $or = ' or ';
 
             // Construct the cut parameters
-            // $cut1 = '(cast(he_sigma as float)>6) and (cast(sundist as float)>10)';
-            // $cut2 = '(cast(sigma as float)>6) and (cast(sundist as float)>10)';
-            // $cut3 = '((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6))';
+            $cut1 = '(cast(he_sigma as float)>6) and (cast(sundist as float)>10)';
+            $cut2 = '(cast(sigma as float)>6) and (cast(sundist as float)>10)';
+            $cut3 = '((cast(sigma as float)>4) and (cast(he_sigma as float)>4) and (cast(sundist as float)>10)) and ((cast(sigma as float)<=6) or (cast(he_sigma as float)<=6))';
 
-            // $cut4 = '((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))';
-            // $cut5 = '((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))';
-            // $cut6 = '((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39))';
-
-           // // Construct the query statement 
-           //  $queryStatement = 'SELECT flareID, best_ra, best_dec, gall, galb, sigma, fglassoc from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6;
-
-            $fava_cut_positive = '((cast(sundist as float)>6.0) and (((cast(sigma as float)>6.0) and ((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) ) or ((cast(he_sigma as float)>6.0)  and ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01)) ) or ((cast(sigma as float)>4.0) and (cast(he_sigma as float)>4.0) and (((cast(le_ts as float)<18.0) or (cast(le_contflag as float)>-0.01)) or ((cast(he_ts as float)<18.0) or (cast(he_contflag as float)>-0.01))) ) ))';
-
-            $ts_cut_all = '(((cast(he_ts as float)>39.0) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))) or ((cast(le_ts as float)>39.0) and (cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))) or ((cast(le_sundist as float)>6.0) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and (cast(he_sundist as float)>6.0) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(le_ts as float)>18.0) and (cast(he_ts as float)>18.0) and (cast(he_le_dist as float)<1.5)))';
+            $cut4 = '((cast(he_ts as float)>39) and (cast(he_sundist as float)>10)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1))';
+            $cut5 = '((cast(le_ts as float)>39) and (cast(le_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1))';
+            $cut6 = '((cast(le_ts as float)>18) and (cast(he_ts as float)>18)) and ((cast(le_sundist as float)>10) and (cast(he_sundist as float)>10)) and ((cast(le_contflag as float)==0) or (cast(le_contflag as float)==1)) and ((cast(he_contflag as float)==0) or (cast(he_contflag as float)==1)) and (cast(he_le_dist as float)<1.5) and ((cast(he_ts as float)<=39) or (cast(le_ts as float)<=39))';
 
            // Construct the query statement 
-            $queryStatement = 'SELECT flareID, best_ra, best_dec, gall, galb, sigma, fglassoc from flares WHERE ' . $fava_cut_positive . $or . $ts_cut_all;
+            $queryStatement = 'SELECT flareID, best_ra, best_dec, gall, galb, sigma, fglassoc from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6;
 
             // echo "Query Statement:<BR>";
             // echo $queryStatement;
@@ -329,9 +319,7 @@
 
             // Encode the PHP associative array into a JSON associative array
             echo json_encode($data);
-
     }
-
 
 ?>  
 
