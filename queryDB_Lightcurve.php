@@ -19,45 +19,53 @@
             return $d * 6371;
     }
 
-
     // Get the url parameters
     $raUser = $_GET['ra'];
     $decUser = $_GET['dec'];
 
+    // Setup the databa info
+    $servername = "asddb.gsfc.nasa.gov";
+    $username = "favaread";
+    $password = "IhopeFAVAdataworks";
+
     // Initiate the database connection
-    // $db = new SQLite3 ('./db/geohash.db');
-    // $db = new SQLite3 ('./db/fava.db');
-    $db = new SQLite3 ('./db/fava_lightcurve.db');
+    // $conn = new mysqli($servername, $username, $password);
+    $conn = mysql_connect($servername, $username, $password);
 
-    $queryStatement = 'SELECT ra, dec FROM geohash' ;
-    // $queryStatement = 'SELECT radec FROM geohash' ;
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+    // echo "Connected successfully";
 
-    // echo "Query Statement:<BR>";
+    // Create the query statement
+    $queryStatement = 'SELECT RAs, Decs FROM geohash';
+
+    // echo "<BR><BR>Query Statement:<BR>";
     // echo $queryStatement;
     // echo "<BR>";
 
-    // // Query the database
-    $results = $db->query($queryStatement);
 
-    // // Create an array to store the results
-    // // $ra = array();
-    // // $dec = array();
+    // Select the database
+    mysql_select_db('FAVA');
+
+    // Query the database
+    $retval = mysql_query($queryStatement, $conn);
+
+    if(! $retval ) {
+        die('Could not get data: ' . mysql_error());
+    }
 
     $distance = array();
 
     // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+    while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
 
-        $data[] = $row;
+        // $data[] = $row;
         
-        $ra = $row['ra'];
-        $dec = $row['dec'];
-        $radec = $row['ra'] . 'x' . $row['dec'];
-
-        // $radec = $row;
-        // $substrings = explode('x',$radec);
-        // $ra = $substrings[0];
-        // $dec = $substrings[1];
+        $ra = $row['RAs'];
+        $dec = $row['Decs'];
+        $radec = $row['RAs'] . 'x' . $row['Decs'];
 
         $distance[$radec] = distance($dec, $ra, floatval($decUser), floatval($raUser));
 
@@ -70,24 +78,25 @@
     // echo "<BR>";
     // echo $radec_closest; 
 
-    // Get the url parameters
-    // $radec = $_GET['radec'];
-
     // Construct the SQL command        
-    $queryStatement = 'SELECT (tmin + tmax)/2.0 AS time, nev, avnev, sigma, he_nev, he_avnev, he_sigma FROM data WHERE radec == "' . $radec_closest . '" ORDER BY tmin';
+    $queryStatement = "SELECT (cast(tmin as SIGNED) + cast(tmax as SIGNED))/2.0 AS time, nev, avnev, sigma, he_nev, he_avnev, he_sigma FROM data WHERE radec = '" . $radec_closest . "' ORDER BY tmin";
 
     // echo "Query Statement:<BR>";
     // echo $queryStatement;
     // echo "<BR>";
 
     // Query the database
-    $results = $db->query($queryStatement);
+    $retval = mysql_query($queryStatement, $conn);
+
+    if(! $retval ) {
+        die('Could not get data: ' . mysql_error());
+    }
 
     // Create an array to store the results
     $data = array();
 
-    // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+    // // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
+    while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
 
         $data[] = $row;
 
@@ -96,11 +105,7 @@
     // Encode the PHP associative array into a JSON associative array
     echo json_encode($data);
 
+    // echo "Fetched data successfully\n";
+    mysql_close($conn);
 
-?>  
-
-
-
-
-
-
+?> 

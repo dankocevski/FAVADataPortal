@@ -24,3 +24,13 @@ db/fava_newtimebin.txt
 db/fava_flares_newtimebin.txt
 
 db/fava_lightcurve.db
+
+queryDB_Lightcurve_sqlite.php
+
+queryDB_2FAV_NX.php
+
+queryDB_Lightcurve_NX.php
+
+queryDB_2FAV_NX.php
+
+queryDB_2FAV_NX.php
