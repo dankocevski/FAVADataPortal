@@ -34,3 +34,5 @@ queryDB_Lightcurve_NX.php
 queryDB_2FAV_NX.php
 
 queryDB_2FAV_NX.php
+
+queryDB_2FAV_sqlite.php
