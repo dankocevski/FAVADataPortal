@@ -104,7 +104,7 @@
     if ($typeOfRequest === 'TimebinData') { 
 
         // Construct the query statement 
-        $queryStatement = 'select distinct week, tmin, tmax, dateStart, dateStop from flares order by cast(week as int) DESC;' ;
+        $queryStatement = 'SELECT distinct week, tmin, tmax, dateStart, dateStop FROM flares ORDER BY cast(week as SIGNED) DESC;' ;
 
         // echo "Query Statement:<BR>";
         // echo $queryStatement;
