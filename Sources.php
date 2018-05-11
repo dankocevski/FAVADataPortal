@@ -545,6 +545,8 @@
 
 				data = JSON.parse(responseText);
 
+				console.log(data);
+
 				fillTable(data);
 				populateMap(data);
 
@@ -713,9 +715,9 @@
 
 					row[++j] ='<td style="text-align: center;">';
 
-					if (key === 'cast(num as int)') {
+					if (key === 'num') {
 
-						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['cast(num as int)'] + '"">' + sourceRecord['cast(num as int)'] + '</a>';
+						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
 
 					} else if (key === 'bestPositionSource') {
 
