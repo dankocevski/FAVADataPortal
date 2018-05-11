@@ -480,7 +480,6 @@
 					relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
 					e_relflux.push( [relflux_low,relflux_high] )
 
-
        				he_nev.push(datum.he_nev);
        				he_avnev.push(datum.he_avnev);
        				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)

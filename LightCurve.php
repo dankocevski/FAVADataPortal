@@ -291,6 +291,8 @@
 		    var dec_urlEncoded = encodeURIComponent(dec);
 	        var URL = "queryDB_Lightcurve.php?ra=" + ra_urlEncoded + "&dec=" + dec_urlEncoded;
 
+	        console.log(URL);
+	        
 			$.ajax({url: URL, success: function(responseText){
 
                 data_lightCurve = JSON.parse(responseText);
@@ -316,14 +318,14 @@
 					he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
 					e_he_relflux.push( [he_relflux_low,he_relflux_high] )
 
-					relflux_withMET.push( [datum.time, (datum.nev-datum.avnev)/datum.avnev] )
-					e_relflux_withMET.push( [datum.time, relflux_low, relflux_high ])
+					relflux_withMET.push( [parseInt(datum.time), (datum.nev-datum.avnev)/datum.avnev] )
+					e_relflux_withMET.push( [parseInt(datum.time), relflux_low, relflux_high ])
 
-					he_relflux_withMET.push( [datum.time, (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
-					e_he_relflux_withMET.push( [datum.time, he_relflux_low, he_relflux_high ])
+					he_relflux_withMET.push( [parseInt(datum.time), (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
+					e_he_relflux_withMET.push( [parseInt(datum.time), he_relflux_low, he_relflux_high ])
 
-					sigma_withMET.push( [datum.time, parseFloat(datum.sigma)])
-					he_sigma_withMET.push( [datum.time, parseFloat(datum.he_sigma)] )
+					sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.sigma)])
+					he_sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.he_sigma)] )
 
     			});
 				
