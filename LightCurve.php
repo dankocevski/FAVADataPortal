@@ -1096,6 +1096,7 @@
 		        .projection(projection);
 		        
 		    var svg = d3.select("#FlareMap").append("svg")
+		    	.attr('id', 'flareMap')
 		        .attr('class', 'map')
 		        .attr("width", width)
 		        .attr("height", height)
@@ -1785,6 +1786,7 @@
 		function updateFlareData() {
 
 		    var svg = d3.select("svg")
+		    var svg
 		    var g = svg.select('g')
 
 		    var width = mapWidth,
@@ -1942,7 +1944,7 @@
 		      		}
 		      	})
 
-		      
+
 		      .attr("transform", function(d) {
 		      		if (d.flareID === flareID) {
 		      			return
