@@ -1028,19 +1028,17 @@
 		 //    queryDB_2FAV(raCenter, decCenter, searchRadius)
 		 //    queryDB_3FGL(raCenter, decCenter, searchRadius)
 
-		 baseURL = window.location.href.replace(window.location.search,'')
+			 baseURL = window.location.href.replace(window.location.search,'')
 
-	    // Setup the URL
-	    var ra = document.getElementById('raInput').value;
-		var dec = document.getElementById('decInput').value;
-	    var ra_urlEncoded = encodeURIComponent(ra);
-	    var dec_urlEncoded = encodeURIComponent(dec);
+		    // Setup the URL
+		    var ra = document.getElementById('raInput').value;
+			var dec = document.getElementById('decInput').value;
+		    var ra_urlEncoded = encodeURIComponent(ra);
+		    var dec_urlEncoded = encodeURIComponent(dec);
 
-        var newURL = baseURL + "?ra=" + ra_urlEncoded + "&dec=" + dec_urlEncoded;
-		window.location.href = newURL;
-
+	        var newURL = baseURL + "?ra=" + ra_urlEncoded + "&dec=" + dec_urlEncoded;
+			window.location.href = newURL;
 		}
-
 
 		function update() {
 
@@ -1934,13 +1932,17 @@
 		      .style("stroke-dasharray", ("3, 3"))
 		      .style("opacity", .5)  
 		      // .attr("r", function(d) { return d.error })
+
+
 		      .attr("r", function(d) { 
 		      		if (d.flareID === flareID) {
 		      			return
 		      		} else {
-		      			return d.le_r95*34   
+		      			return d.best_r95*34   
 		      		}
 		      	})
+
+		      
 		      .attr("transform", function(d) {
 		      		if (d.flareID === flareID) {
 		      			return
