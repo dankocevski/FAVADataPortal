@@ -379,8 +379,17 @@
 				var gall = data_flare[0]['gall'];
 				var galb = data_flare[0]['galb'];
 
-				var URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
-				var URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+				var URL_low;
+				var URL_high;
+
+				if (parseInt(tmin) < 568568618 == true) {
+					URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+				} else {
+					URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R3_SOURCE_V2/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R3_SOURCE_V2/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+				}
+
 
 				$("#lowEnergyTSMap").attr("src",URL_low);
 				$("#highEnergyTSMap").attr("src",URL_high);
@@ -468,37 +477,59 @@
 
                 data_lightCurve = JSON.parse(responseText);
 
-				$.each(data_lightCurve, function(i, datum) {
+                time = data_lightCurve['time']
 
-       				time.push(parseInt(datum.time));
-       				nev.push(datum.nev);
-       				avnev.push(datum.avnev);
-       				relflux.push( (datum.nev-datum.avnev)/datum.avnev )
-       				sigma.push(parseFloat(datum.sigma));
+                nev = data_lightCurve['nev']
+                avnev = data_lightCurve['avnev']
+                relflux = data_lightCurve['relflux']
+                e_relflux = data_lightCurve['e_relflux']     
+                sigma = data_lightCurve['sigma']
 
-					relflux_low = (datum.nev-datum.avnev)/datum.avnev - (Math.sqrt( datum.nev)/datum.avnev)
-					relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
-					e_relflux.push( [relflux_low,relflux_high] )
+                he_nev = data_lightCurve['he_nev']
+                he_avnev = data_lightCurve['he_avnev']
+                he_relflux = data_lightCurve['he_relflux']
+                e_he_relflux = data_lightCurve['e_he_relflux']     
+                he_sigma = data_lightCurve['he_sigma']
 
-       				he_nev.push(datum.he_nev);
-       				he_avnev.push(datum.he_avnev);
-       				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)
-       				he_sigma.push(parseFloat(datum.he_sigma));
+                relflux_withMET = data_lightCurve['relflux_withMET']
+                e_relflux_withMET = data_lightCurve['e_relflux_withMET']
+                he_relflux_withMET = data_lightCurve['he_relflux_withMET']
+                e_he_relflux_withMET = data_lightCurve['e_he_relflux_withMET']
 
-					he_relflux_low = (datum.he_nev-datum.he_avnev)/datum.he_avnev - (Math.sqrt(datum.he_nev)/datum.he_avnev)
-					he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
-					e_he_relflux.push( [he_relflux_low,he_relflux_high] )
+                sigma_withMET = data_lightCurve['sigma_withMET']
+                he_sigma_withMET = data_lightCurve['he_sigma_withMET']
 
-					relflux_withMET.push( [parseInt(datum.time), (datum.nev-datum.avnev)/datum.avnev] )
-					e_relflux_withMET.push( [parseInt(datum.time), relflux_low, relflux_high ])
+				// $.each(data_lightCurve, function(i, datum) {
 
-					he_relflux_withMET.push( [parseInt(datum.time), (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
-					e_he_relflux_withMET.push( [parseInt(datum.time), he_relflux_low, he_relflux_high ])
+    //    				time.push(parseInt(datum.time));
+    //    				nev.push(datum.nev);
+    //    				avnev.push(datum.avnev);
+    //    				relflux.push( (datum.nev-datum.avnev)/datum.avnev )
+    //    				sigma.push(parseFloat(datum.sigma));
 
-					sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.sigma)])
-					he_sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.he_sigma)] )
+				// 	relflux_low = (datum.nev-datum.avnev)/datum.avnev - (Math.sqrt( datum.nev)/datum.avnev)
+				// 	relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
+				// 	e_relflux.push( [relflux_low,relflux_high] )
 
-    			});
+    //    				he_nev.push(datum.he_nev);
+    //    				he_avnev.push(datum.he_avnev);
+    //    				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)
+    //    				he_sigma.push(parseFloat(datum.he_sigma));
+
+				// 	he_relflux_low = (datum.he_nev-datum.he_avnev)/datum.he_avnev - (Math.sqrt(datum.he_nev)/datum.he_avnev)
+				// 	he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
+				// 	e_he_relflux.push( [he_relflux_low,he_relflux_high] )
+
+				// 	relflux_withMET.push( [parseInt(datum.time), (datum.nev-datum.avnev)/datum.avnev] )
+				// 	e_relflux_withMET.push( [parseInt(datum.time), relflux_low, relflux_high ])
+
+				// 	he_relflux_withMET.push( [parseInt(datum.time), (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
+				// 	e_he_relflux_withMET.push( [parseInt(datum.time), he_relflux_low, he_relflux_high ])
+
+				// 	sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.sigma)])
+				// 	he_sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.he_sigma)] )
+
+    // 			});
 
 				document.getElementById('contentPlaceholderLow').style.display = 'none';
 				document.getElementById('contentPlaceholderHigh').style.display = 'none';
