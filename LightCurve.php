@@ -1559,13 +1559,15 @@
 
 		                <?php
 		                  if ( (isset($_GET['ra'])) ) {             
-		                    $ra = $_GET['ra'];
+		                    $ra = floatval($_GET['ra']);
+				    		$ra = htmlspecialchars($ra, ENT_QUOTES, 'UTF-8');
 		                    $raSetString = "var raCenter = $ra;";
 		                    echo $raSetString;
 		                  }
 
 		                  if ( (isset($_GET['dec'])) ) {             
-		                    $dec = $_GET['dec'];
+		                    $dec = floatval($_GET['dec']);
+				    		$dec = htmlspecialchars($dec, ENT_QUOTES, 'UTF-8');
 		                    $decSetString = "var decCenter = $dec;";
 		                    echo $decSetString;
 		                  }
@@ -2150,10 +2152,11 @@
 
             <?php
 				if ( (isset($_GET['threshold'])) ) {
-					$thresholdRequest = $_GET['threshold'];
+					$thresholdRequest = intval($_GET['threshold']);
+				    $thresholdRequest = htmlspecialchars($thresholdRequest, ENT_QUOTES, 'UTF-8');
 					echo "var thresholdRequest = '$thresholdRequest';";
 	            } else {
-	            	echo "var thresholdRequest = '6Sigma';";
+	            	echo "var thresholdRequest = '6';";
 
 	            }
             ?>  
@@ -2326,8 +2329,11 @@
 
 				if ( (isset($_GET['ra'])) && (isset($_GET['ra'])) ) {
 				
-					$raUser = $_GET['ra'];
-					$decUser = $_GET['dec'];
+					$raUser = floatval($_GET['ra']);
+					$decUser = floatval($_GET['dec']);
+
+				    $raUser = htmlspecialchars($raUser, ENT_QUOTES, 'UTF-8');
+				    $decUser = htmlspecialchars($decUser, ENT_QUOTES, 'UTF-8');
 
 				    $raInput = "document.getElementById('raInput').value = $raUser;";
 		   		    $decInput = "document.getElementById('decInput').value = $decUser;";

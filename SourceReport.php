@@ -383,11 +383,11 @@
 				var URL_high;
 
 				if (parseInt(tmin) < 568568618 == true) {
-					URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
-					URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R2_SOURCE_V6/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_low = "https://s3df.slac.stanford.edu/data/fermi/FAVA/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_high = "https://s3df.slac.stanford.edu/data/fermi/FAVA/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
 				} else {
-					URL_low = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R3_SOURCE_V2/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
-					URL_high = "http://www.slac.stanford.edu/~kocevski/FAVA/weekly/P8R3_SOURCE_V2/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_low = "https://s3df.slac.stanford.edu/data/fermi/FAVA/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_leFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
+					URL_high = "https://s3df.slac.stanford.edu/data/fermi/FAVA/maps/" + tmin + '_' + tmax + '/tsmaps/png/tsmap_heFAVF_' + tmin + '_' + tmax + '_' + gall + '_' + galb + '.png';
 				}
 
 
@@ -477,59 +477,65 @@
 
                 data_lightCurve = JSON.parse(responseText);
 
-                time = data_lightCurve['time']
+                // console.log('Lightcurve data recieved.')
 
-                nev = data_lightCurve['nev']
-                avnev = data_lightCurve['avnev']
-                relflux = data_lightCurve['relflux']
-                e_relflux = data_lightCurve['e_relflux']     
-                sigma = data_lightCurve['sigma']
+                // time = data_lightCurve['time']
 
-                he_nev = data_lightCurve['he_nev']
-                he_avnev = data_lightCurve['he_avnev']
-                he_relflux = data_lightCurve['he_relflux']
-                e_he_relflux = data_lightCurve['e_he_relflux']     
-                he_sigma = data_lightCurve['he_sigma']
+                // console.log(time);
 
-                relflux_withMET = data_lightCurve['relflux_withMET']
-                e_relflux_withMET = data_lightCurve['e_relflux_withMET']
-                he_relflux_withMET = data_lightCurve['he_relflux_withMET']
-                e_he_relflux_withMET = data_lightCurve['e_he_relflux_withMET']
+                // nev = data_lightCurve['nev']
+                // avnev = data_lightCurve['avnev']
+                // relflux = data_lightCurve['relflux']
+                // e_relflux = data_lightCurve['e_relflux']     
+                // sigma = data_lightCurve['sigma']
 
-                sigma_withMET = data_lightCurve['sigma_withMET']
-                he_sigma_withMET = data_lightCurve['he_sigma_withMET']
+                // console.log(sigma);
 
-				// $.each(data_lightCurve, function(i, datum) {
+                // he_nev = data_lightCurve['he_nev']
+                // he_avnev = data_lightCurve['he_avnev']
+                // he_relflux = data_lightCurve['he_relflux']
+                // e_he_relflux = data_lightCurve['e_he_relflux']     
+                // he_sigma = data_lightCurve['he_sigma']
 
-    //    				time.push(parseInt(datum.time));
-    //    				nev.push(datum.nev);
-    //    				avnev.push(datum.avnev);
-    //    				relflux.push( (datum.nev-datum.avnev)/datum.avnev )
-    //    				sigma.push(parseFloat(datum.sigma));
+                // relflux_withMET = data_lightCurve['relflux_withMET']
+                // e_relflux_withMET = data_lightCurve['e_relflux_withMET']
+                // he_relflux_withMET = data_lightCurve['he_relflux_withMET']
+                // e_he_relflux_withMET = data_lightCurve['e_he_relflux_withMET']
 
-				// 	relflux_low = (datum.nev-datum.avnev)/datum.avnev - (Math.sqrt( datum.nev)/datum.avnev)
-				// 	relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
-				// 	e_relflux.push( [relflux_low,relflux_high] )
+                // sigma_withMET = data_lightCurve['sigma_withMET']
+                // he_sigma_withMET = data_lightCurve['he_sigma_withMET']
 
-    //    				he_nev.push(datum.he_nev);
-    //    				he_avnev.push(datum.he_avnev);
-    //    				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)
-    //    				he_sigma.push(parseFloat(datum.he_sigma));
+				$.each(data_lightCurve, function(i, datum) {
 
-				// 	he_relflux_low = (datum.he_nev-datum.he_avnev)/datum.he_avnev - (Math.sqrt(datum.he_nev)/datum.he_avnev)
-				// 	he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
-				// 	e_he_relflux.push( [he_relflux_low,he_relflux_high] )
+       				time.push(parseInt(datum.time));
+       				nev.push(datum.nev);
+       				avnev.push(datum.avnev);
+       				relflux.push( (datum.nev-datum.avnev)/datum.avnev )
+       				sigma.push(parseFloat(datum.sigma));
 
-				// 	relflux_withMET.push( [parseInt(datum.time), (datum.nev-datum.avnev)/datum.avnev] )
-				// 	e_relflux_withMET.push( [parseInt(datum.time), relflux_low, relflux_high ])
+					relflux_low = (datum.nev-datum.avnev)/datum.avnev - (Math.sqrt( datum.nev)/datum.avnev)
+					relflux_high = (datum.nev-datum.avnev)/datum.avnev + (Math.sqrt( datum.nev)/datum.avnev)
+					e_relflux.push( [relflux_low,relflux_high] )
 
-				// 	he_relflux_withMET.push( [parseInt(datum.time), (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
-				// 	e_he_relflux_withMET.push( [parseInt(datum.time), he_relflux_low, he_relflux_high ])
+       				he_nev.push(datum.he_nev);
+       				he_avnev.push(datum.he_avnev);
+       				he_relflux.push( (datum.he_nev-datum.he_avnev)/datum.he_avnev)
+       				he_sigma.push(parseFloat(datum.he_sigma));
 
-				// 	sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.sigma)])
-				// 	he_sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.he_sigma)] )
+					he_relflux_low = (datum.he_nev-datum.he_avnev)/datum.he_avnev - (Math.sqrt(datum.he_nev)/datum.he_avnev)
+					he_relflux_high = (datum.he_nev-datum.he_avnev)/datum.he_avnev + (Math.sqrt(datum.he_nev)/datum.he_avnev)
+					e_he_relflux.push( [he_relflux_low,he_relflux_high] )
 
-    // 			});
+					relflux_withMET.push( [parseInt(datum.time), (datum.nev-datum.avnev)/datum.avnev] )
+					e_relflux_withMET.push( [parseInt(datum.time), relflux_low, relflux_high ])
+
+					he_relflux_withMET.push( [parseInt(datum.time), (datum.he_nev-datum.he_avnev)/datum.he_avnev] )
+					e_he_relflux_withMET.push( [parseInt(datum.time), he_relflux_low, he_relflux_high ])
+
+					sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.sigma)])
+					he_sigma_withMET.push( [parseInt(datum.time), parseFloat(datum.he_sigma)] )
+
+    			});
 
 				document.getElementById('contentPlaceholderLow').style.display = 'none';
 				document.getElementById('contentPlaceholderHigh').style.display = 'none';
@@ -711,7 +717,6 @@
 						}
 					}]
 				});
-
 
 				// RelativeFluxGT100MeV_Significance	
 				var chart;
@@ -1111,7 +1116,9 @@
 				// Calculate the analysis values
 				var startTime = Math.min.apply(null, time);
 				var endTime = Math.max.apply(null, time);
+				console.log(sigma);
 				var maximumSigmaLow = Math.max.apply(null, sigma);
+				console.log(maximumSigmaLow);
 				i = sigma.indexOf(maximumSigmaLow);
 				maximumSigmaTimeLow = time[i];
 				maximumSigmaLow = maximumSigmaLow.toFixed(2);
@@ -1602,7 +1609,6 @@
 		            
 		            // text scaling
 		            g.selectAll("text").attr("font-size", function () {
-
 		                return 1/s+"em";        
 		            });
 		            
@@ -1758,13 +1764,15 @@
 
 		                <?php
 		                  if ( (isset($_GET['ra'])) ) {             
-		                    $ra = $_GET['ra'];
+		                    $ra = floatval($_GET['ra']);
+		                    $ra = htmlspecialchars($ra, ENT_QUOTES, 'UTF-8');
 		                    $raSetString = "var raCenter = $ra;";
 		                    echo $raSetString;
 		                  }
 
 		                  if ( (isset($_GET['dec'])) ) {             
-		                    $dec = $_GET['dec'];
+		                    $dec = floatval($_GET['dec']);
+		                    $dec = htmlspecialchars($dec, ENT_QUOTES, 'UTF-8');
 		                    $decSetString = "var decCenter = $dec;";
 		                    echo $decSetString;
 		                  }
@@ -2370,10 +2378,11 @@
 
             <?php
 				if ( (isset($_GET['threshold'])) ) {
-					$thresholdRequest = $_GET['threshold'];
+					$thresholdRequest = intval($_GET['threshold']);
+					$thresholdRequest = htmlspecialchars($thresholdRequest, ENT_QUOTES, 'UTF-8');
 					echo "var thresholdRequest = '$thresholdRequest';";
 	            } else {
-	            	echo "var thresholdRequest = '6Sigma';";
+	            	echo "var thresholdRequest = '6';";
 
 	            }
             ?>  
@@ -2524,7 +2533,8 @@
 			// Use php to read the url parameter and set it in the analysis run info box
 	        <?php
 				if ( (isset($_GET['week'])) ) {				
-					$week = $_GET['week'];
+					$week = intval($_GET['week']);
+					$week = htmlspecialchars($week, ENT_QUOTES, 'UTF-8');
 				 //    $weekLowSetString = "document.getElementById('WeekLow').innerHTML = $week;";
 				 //    $weekHighSetString = "document.getElementById('WeekHigh').innerHTML = $week;";
 	                $weekNumberSetString = "weekNumber = $week;";
@@ -2533,7 +2543,8 @@
 	            } 
 
 				if ( (isset($_GET['flare'])) ) {				
-					$flare = $_GET['flare'];
+					$flare = intval($_GET['flare']);
+					$flare = htmlspecialchars($flare, ENT_QUOTES, 'UTF-8');
 	                $flareNumberSetString = "flareNumber = $flare;";
 	                echo $flareNumberSetString;
 	            } 

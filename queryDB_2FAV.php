@@ -1,5 +1,10 @@
 <?php
 
+    define('MYSQL_ASSOC',MYSQLI_ASSOC);
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+
     function AngularDistance( $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo) {
 
         // convert from degrees to radians
@@ -32,17 +37,18 @@
     } else {
 
         // Determine the type of data requested
-        $typeOfRequest = $_GET['typeOfRequest']; 
+        $typeOfRequest = $_GET['typeOfRequest'];
+        $typeOfRequest = htmlspecialchars($typeOfRequest, ENT_QUOTES, 'UTF-8');
 
     }
 
     // Setup the databa info
     $servername = "asddb.gsfc.nasa.gov";
     $username = "favaread";
-    $password = "IhopeFAVAdataworks";
+    $password = "SecurityisGoodinGITs";
 
     // Initiate the database connection
-    $conn = mysql_connect($servername, $username, $password);
+    $conn = mysqli_connect($servername, $username, $password);
 
     // Check connection
     if ($conn->connect_error) {
@@ -57,7 +63,7 @@
 
 
     // Select the database
-    mysql_select_db('FAVA');
+    mysqli_select_db($conn, 'FAVA');
 
     // Return the 2FAV catalog (2933 flares)
     if ($typeOfRequest === '2FAV') { 
@@ -82,17 +88,17 @@
 
         // Query the database
         // $results = $db->query($queryStatement);
-        $retval = mysql_query($queryStatement, $conn);
+        $retval = mysqli_query($conn, $queryStatement);
 
         if(! $retval ) {
-            die('Could not get data: ' . mysql_error());
+            die('Could not get data: ' . mysqli_error());
         }
 
         // Create an array to store the results
         $data = array();
 
         // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-        while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+        while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
             $data[] = $row;
         }  
 
@@ -112,13 +118,13 @@
 
         // Query the database
         // $results = $db->query($queryStatement);
-        $retval = mysql_query($queryStatement, $conn);
+        $retval = mysqli_query($conn, $queryStatement);
 
         // Create an array to store the results
         $data = array();
 
         // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-        while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+        while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
             $data[] = $row;
         }  
 
@@ -132,22 +138,36 @@
         if (isset($_GET['week'])) { 
 
             // Get the URL parameters
-            $week = $_GET['week'];
-            $threshold = $_GET['threshold'];
+            $week = intval($_GET['week']);
+            $week = htmlspecialchars($week, ENT_QUOTES, 'UTF-8');
+
+            $threshold = intval($_GET['threshold']);
+            $threshold = htmlspecialchars($threshold, ENT_QUOTES, 'UTF-8');
 
             $and = ' and ';
             $or = ' or ';
 
             // Construct the query statement 
-            if ($threshold === '6Sigma') {
+            if ($threshold === '6') {
 
+                // Original (commented out on 12/16/2020)
+                // $cut1 = '(week = ' . $week . ' and (he_sigma>6) and (sundist>10))';
+                // $cut2 = '(week = ' . $week . '  and (sigma>6) and (sundist>10))';
+                // $cut3 = '(week = ' . $week . '  and ((sigma>4) and (he_sigma>4) and (sundist>10)) and ((sigma<=6) or (he_sigma<=6)))';
+
+                // $cut4 = '(week = ' . $week . '  and ((he_ts>39) and (he_sundist>10)) and ((he_contflag=0) or (he_contflag=1)))';
+                // $cut5 = '(week = ' . $week . '  and ((le_ts>39) and (le_sundist>10)) and ((le_contflag=0) or (le_contflag=1)))';
+                // $cut6 = '(week = ' . $week . '  and ((le_ts>18) and (he_ts>18)) and ((le_sundist>10) and (he_sundist>10)) and ((le_contflag=0) or (le_contflag=1)) and ((he_contflag=0) or (he_contflag=1)) and (he_le_dist<1.5) and ((he_ts<=39) or (le_ts<=39)))';
+
+                # Need to creating a set of cuts that doesn't include le_contflag and he_contflag, because the Fermipy implemetnation always returns le_contflag = -1 and he_contflag = -1.
                 $cut1 = '(week = ' . $week . ' and (he_sigma>6) and (sundist>10))';
                 $cut2 = '(week = ' . $week . '  and (sigma>6) and (sundist>10))';
                 $cut3 = '(week = ' . $week . '  and ((sigma>4) and (he_sigma>4) and (sundist>10)) and ((sigma<=6) or (he_sigma<=6)))';
 
-                $cut4 = '(week = ' . $week . '  and ((he_ts>39) and (he_sundist>10)) and ((he_contflag=0) or (he_contflag=1)))';
-                $cut5 = '(week = ' . $week . '  and ((le_ts>39) and (le_sundist>10)) and ((le_contflag=0) or (le_contflag=1)))';
-                $cut6 = '(week = ' . $week . '  and ((le_ts>18) and (he_ts>18)) and ((le_sundist>10) and (he_sundist>10)) and ((le_contflag=0) or (le_contflag=1)) and ((he_contflag=0) or (he_contflag=1)) and (he_le_dist<1.5) and ((he_ts<=39) or (le_ts<=39)))';
+                $cut4 = '(week = ' . $week . '  and ((he_ts>39) and (he_sundist>10)))';
+                $cut5 = '(week = ' . $week . '  and ((le_ts>39) and (le_sundist>10)))';
+                $cut6 = '(week = ' . $week . '  and ((le_ts>18) and (he_ts>18)) and ((le_sundist>10) and (he_sundist>10)) and (he_le_dist<1.5) and ((he_ts<=39) or (le_ts<=39)))';
+
 
                 $queryStatement = 'SELECT flareID, num, best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE ' . $cut1 . $or . $cut2 . $or . $cut3 . $or . $cut4 . $or . $cut5 . $or . $cut6 . ' ORDER BY num ASC';
 
@@ -157,7 +177,7 @@
 
             } else {
 
-                $queryStatement = 'SELECT flareID, num, best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE week == ' . $week . ' ORDER BY num ASC';
+                $queryStatement = 'SELECT flareID, num, best_ra, best_dec, best_r95, bestPositionSource, fava_ra, fava_dec, lbin, bbin, gall, galb, tmin, tmax, sigma, avnev, nev, he_nev, he_avnev, he_sigma, sundist, varindex, favasrc, fglassoc, assoc, le_ts, le_tssigma, le_ra, le_dec, le_gall, le_galb, le_r95, le_contflag, le_sundist, le_dist2bb, le_ffsigma, le_hightsfrac, le_gtlts, le_flux, le_fuxerr, le_index, le_indexerr, he_ts, he_tssigma, he_ra, he_dec, he_gall, he_galb, he_r95, he_contflag, he_sundist, he_dist2bb, he_ffsigma, he_hightsfrac, he_le_dist, he_gtlts, he_flux, he_fuxerr, he_index, he_indexerr, week, dateStart, dateStop from flares WHERE week = ' . $week . ' ORDER BY num ASC';
 
                 // echo "Query Statement:<BR>";
                 // echo $queryStatement;
@@ -167,13 +187,13 @@
             
             // Query the database
             // $results = $db->query($queryStatement);
-            $retval = mysql_query($queryStatement, $conn);
+            $retval = mysqli_query($conn, $queryStatement);
 
             // Create an array to store the results
             $data = array();
 
             // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-            while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+            while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
                 $data[] = $row;
             }  
 
@@ -189,8 +209,12 @@
         if (isset($_GET['week']) && isset($_GET['flare'])) { 
 
             // Get the URL parameters
-            $week = $_GET['week'];
-            $flare = $_GET['flare'];
+            $week = intval($_GET['week']);
+            $flare = intval($_GET['flare']);
+
+            $week = htmlspecialchars($week, ENT_QUOTES, 'UTF-8');
+            $flare = htmlspecialchars($flare, ENT_QUOTES, 'UTF-8');
+
             $flareID = $week . '_' . $flare;
 
             $and = ' and ';
@@ -204,13 +228,13 @@
             // echo "<BR>";
 
             // Query the database
-            $retval = mysql_query($queryStatement, $conn);
+            $retval = mysqli_query($conn, $queryStatement);
 
             // Create an array to store the results
             $data = array();
 
             // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-            while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+            while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
                 $data[] = $row;
             }  
 
@@ -226,17 +250,22 @@
         if (isset($_GET['ra']) && isset($_GET['dec']) && isset($_GET['radius']) && isset($_GET['threshold'])) { 
 
             // Get the URL parameters
-            $raROI = $_GET['ra']; 
-            $decROI = $_GET['dec']; 
-            $radius = $_GET['radius'];
-            $threshold = $_GET['threshold'];
+            $raROI = floatval($_GET['ra']); 
+            $decROI = floatval($_GET['dec']); 
+            $radius = floatval($_GET['radius']);
+            $threshold = intval($_GET['threshold']);
             
+            $raROI = htmlspecialchars($raROI, ENT_QUOTES, 'UTF-8');
+            $decROI = htmlspecialchars($decROI, ENT_QUOTES, 'UTF-8');
+            $radius = htmlspecialchars($radius, ENT_QUOTES, 'UTF-8');
+            $threshold = htmlspecialchars($threshold, ENT_QUOTES, 'UTF-8');
+
             // Construct the logical operators
             $and = ' and ';
             $or = ' or ';
 
             // Construct the query statement 
-            if ($threshold === '6Sigma') {
+            if ($threshold === '6') {
 
                 $cut1 = '((he_sigma>6) and (sundist>10) )';
                 $cut2 = '((sigma>6) and (sundist>10) )';
@@ -265,13 +294,13 @@
 
             // Query the database
             // $results = $db->query($queryStatement);
-            $retval = mysql_query($queryStatement, $conn);
+            $retval = mysqli_query($conn, $queryStatement);
 
             // Create an array to store the results
             $data = array();
             $count = 0;
 
-            while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+            while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
 
                 // Get the ra and dec of each source
                 $raSource = $row['fava_ra'];
@@ -318,13 +347,13 @@
             // echo "<BR>";
 
             // Query the database
-            $retval = mysql_query($queryStatement, $conn);
+            $retval = mysqli_query($conn, $queryStatement);
 
             // Create an array to store the results
             $data = array();
 
             // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-            while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+            while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
                 $data[] = $row;
             }  
 

@@ -717,7 +717,7 @@
 
 					if (key === 'num') {
 
-						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + sourceRecord['num'] + '"">' + sourceRecord['num'] + '</a>';
+						row[++j] = '<a href="SourceReport.php?week=' + sourceRecord['week'] + '&flare=' + parseInt(sourceRecord['num']) + '"">' + parseInt(sourceRecord['num']) + '</a>';
 
 					} else if (key === 'bestPositionSource') {
 
@@ -966,7 +966,8 @@
 			// Use php to read the url parameter and set it in the analysis run info box
             <?php
 				if ( (isset($_GET['week'])) ) {				
-					$week = $_GET['week'];
+					$week = intval($_GET['week']);
+				    $week = htmlspecialchars($week, ENT_QUOTES, 'UTF-8');
 				    $weekSetString = "document.getElementById('table_weeknumber').innerHTML = $week;";
 	                echo $weekSetString;
 	            } 
@@ -1035,7 +1036,7 @@
 
                         // var lightcurveLink = "<a href=\"http://localhost/~kocevski/FAVA/LightCurve.php?ra=" + point.RAJ2000 + "&dec=" + point.DEJ2000 + "\">FAVA Lightcurve</a>";
                         // var spectrum = "<a href=\"./data/3FGL_spec_v5/"  + point.Source_Name.replace(' ', '_').replace('.','d').replace('+','p') + "_spec.png\" onclick=\"window.open(this.href,'targetWindow','width=800px, height=600px'); return false;\">Spectrum</a>";
-                        var sourceReportLink = "<a href=\"SourceReport.php?week=" + week + "&flare=" + point.Source_Name + "\">FAVA Source Report</a>";
+                        var sourceReportLink = "<a href=\"SourceReport.php?week=" + week + "&flare=" + parseInt(point.Source_Name) + "\">FAVA Source Report</a>";
 
 
                         document.getElementById("tip").innerHTML =   '2FAV_' + week + '_' + point.Source_Name + '<BR>RA: ' + point.RAJ2000 + ', Dec: ' + point.DEJ2000 + '<BR>Association: ' + point.ASSOC1 + '<BR>' + sourceReportLink
@@ -1443,8 +1444,8 @@
 	                                <b>Flare Threshold Selection:</b><br>
 	                                <div class="input-group input-group-sm">
 	                                    <select id="thresholdSelection" name="thresholdSelection">
-	                                        <option value="3Sigma">3 sigma (FAVA Sigma > 3)</option>
-	                                        <option value="6Sigma"selected>6 sigma (FAVA Sigma > 6 or TS > 39)</option>
+	                                        <option value="3">3 sigma (FAVA Sigma > 3)</option>
+	                                        <option value="6"selected>6 sigma (FAVA Sigma > 6 or TS > 39)</option>
 	                                    </select>
 	                                </div>
 	                            </div>

@@ -807,7 +807,6 @@
                 Selection.style.visibility = "hidden";   
 	        });
 
-
             $('#map-parent').dblclick(function (e) {
 
                 var canvas = document.getElementById("proj");
