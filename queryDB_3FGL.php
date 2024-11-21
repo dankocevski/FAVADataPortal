@@ -1,5 +1,10 @@
 <?php
 
+    define('MYSQL_ASSOC',MYSQLI_ASSOC);
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+        
     function AngularDistance( $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo) {
 
         // convert from degrees to radians

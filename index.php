@@ -29,14 +29,6 @@
     <link rel="stylesheet" href="./css/NASA.css">
 
 
-    <!-- Highcharts -->
-	<script src="./js/Highcharts/highcharts.js"></script>
-	<script src="./js/Highcharts/highcharts-more.js"></script>
-	<script src="./js/Highcharts/modules/exporting.js"></script>
-
-    <!-- Highcharts -->
-    <script type="text/javascript" src="./js/kartograph.js"></script>
-    <script type="text/javascript" src="./js/table2CSV.js" > </script> 
 
 </head>
 
@@ -814,7 +806,6 @@
                 var Selection = document.getElementById('Selection');
                 Selection.style.visibility = "hidden";   
 	        });
-
 
             $('#map-parent').dblclick(function (e) {
 

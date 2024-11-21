@@ -4,6 +4,11 @@
     ini_set('max_execution_time', 60);
     ini_set('memory_limit','256M');
 
+    define('MYSQL_ASSOC',MYSQLI_ASSOC);
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+
     function distance($latA, $lonA, $latB, $lonB) {
             // convert from degrees to radians
             $latA = deg2rad($latA); $lonA = deg2rad($lonA);
@@ -26,11 +31,11 @@
     // Setup the databa info
     $servername = "asddb.gsfc.nasa.gov";
     $username = "favaread";
-    $password = "IhopeFAVAdataworks";
+    $password = "SecurityisGoodinGITs";
 
     // Initiate the database connection
     // $conn = new mysqli($servername, $username, $password);
-    $conn = mysql_connect($servername, $username, $password);
+    $conn = mysqli_connect($servername, $username, $password);
 
     // Check connection
     if ($conn->connect_error) {
@@ -47,19 +52,19 @@
 
 
     // Select the database
-    mysql_select_db('FAVA');
+    mysqli_select_db($conn, 'FAVA');
 
     // Query the database
-    $retval = mysql_query($queryStatement, $conn);
+    $retval = mysqli_query($conn, $queryStatement);
 
     if(! $retval ) {
-        die('Could not get data: ' . mysql_error());
+        die('Could not get data: ' . mysqli_error());
     }
 
     $distance = array();
 
     // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+    while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
 
         // $data[] = $row;
         
@@ -86,17 +91,17 @@
     // echo "<BR>";
 
     // Query the database
-    $retval = mysql_query($queryStatement, $conn);
+    $retval = mysqli_query($conn, $queryStatement);
 
     if(! $retval ) {
-        die('Could not get data: ' . mysql_error());
+        die('Could not get data: ' . mysqli_error());
     }
 
     // Create an array to store the results
     $data = array();
 
     // // Loop through each row and create an associative array (i.e. dictionary) where the column name is the key
-    while($row = mysql_fetch_array($retval, MYSQL_ASSOC)) {
+    while($row = mysqli_fetch_array($retval, MYSQLI_ASSOC)) {
 
         $data[] = $row;
 
@@ -106,6 +111,6 @@
     echo json_encode($data);
 
     // echo "Fetched data successfully\n";
-    mysql_close($conn);
+    mysqli_close($conn);
 
 ?> 
